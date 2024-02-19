@@ -12,8 +12,8 @@ int main(int argc, char* argv[]) {
     return 0;
   }
   if (argv[1] == "-h") {
-    std::cout << "Se debe introducir el tamaño del reticulo, y despues el tipo de frontera\n";
-    std::cout << "Que puede ser fria, caliente, o periodica, y, si se desea, obtener la ristra inicial de un fichero indicando su nombre\n";
+    std::cout << "Se debe introducir el tamaño del reticulo, y despues el tipo de frontera(caliente, fria o periodica\n";
+    std::cout << "Si se desea, se puede obtener la ristra inicial desde un fichero indicando su nombre\n";
     return 0;
   }
   std::string arg1 = argv[1];
