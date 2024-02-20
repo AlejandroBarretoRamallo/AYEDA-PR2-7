@@ -10,7 +10,7 @@ class Cell;
 
 class Lattice {
   public:
-    Lattice::~Lattice();
+    ~Lattice();
     Lattice();
     Lattice(const std::string&, const std::string&);
     const Cell& getCell(const Position&) const;
