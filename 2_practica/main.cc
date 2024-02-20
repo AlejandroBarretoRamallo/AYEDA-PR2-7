@@ -28,7 +28,7 @@ void generations(Lattice& reticulo) {
 
 void help() {
   std::cout << "los parametros deben introducirse en el sigueinte orden: tamaño(numero de filas y numero de columnas) y tipo de frontera(periodica, caliente, fria, reflectora o noborder)\n";
-  std::cout << "Si desea dar una configuracion inicial de algun fichero, introduce el nombre del fichero\n y no introduzcas el tamaño";
+  std::cout << "Si desea dar una configuracion inicial de algun fichero, introduce el nombre del fichero\n y no introduzcas el tamaño\n";
   return;
 }
 
@@ -37,7 +37,8 @@ int main(int argc, char* argv[]) {
     std::cout << "Numero de parametros incorrecto\n";
     return 0;
   }
-  if (argv[1] == "-h") {
+  std::string arg1 = argv[1];
+  if (arg1 == "-h") {
     help();
     return 0;
   }

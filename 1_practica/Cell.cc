@@ -39,7 +39,7 @@ int Cell::NextState(Lattice& reticulo) const{
   numero = state_.getstate();
   vecindad += numero * 10;      // obtenemos el estado de la celula actual
   numero = position_.getPosition();
-  Position posicion(numero + 1);           
+  Position posicion(numero + 1);           // obtenemos el estado de la celula siguiente
   vecindad += reticulo.getCell(posicion).getState().getstate();
   switch(vecindad) {    // calculamos el estado dependiendo de la vecindad
     case 0:

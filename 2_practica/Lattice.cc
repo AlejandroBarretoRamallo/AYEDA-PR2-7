@@ -36,6 +36,8 @@ Lattice::Lattice(int N, int M, std::string borderType) {
     }
     rows_ = N;
     colums_ = M;
+    highCorner_ = Position(0, 0);
+    lowCorner_ = Position(rows_ - 1, colums_ - 1);
   }
   else {
     rows_ = N + 2;
@@ -87,6 +89,8 @@ Lattice::Lattice(std::string input, std::string bordertype) {
   borderType_ = bordertype;
   std::ifstream fichero(input);
   fichero >> rows_ >> colums_;
+  highCorner_ = Position(0, 0);
+  lowCorner_ = Position(rows_ - 1, colums_ - 1);
   if (borderType_ == "periodica" || borderType_ == "noborder" || borderType_ == "reflectora") {
     celulas_ = std::vector<std::vector<Cell*>>(rows_, std::vector<Cell*>(colums_, nullptr));
     char caracter;
@@ -159,7 +163,69 @@ Lattice::Lattice(std::string input, std::string bordertype) {
 }
 
 const Cell& Lattice::getCell(const Position& position) const {
-  return *celulas_[position.getPosX()][position.getPosY()];
+  int pos_x = position.getPosX();
+  int pos_y = position.getPosY();
+  if (borderType_ == "caliente" || borderType_ == "fria") {
+    return *celulas_[pos_x][pos_y];
+  }
+  else if (borderType_ == "periodica") {
+    if (pos_x == -1 && pos_y == -1) {
+      return *celulas_[rows_ - 1][colums_ - 1];
+    }
+    else if (pos_x == -1 && pos_y == colums_) {
+      return *celulas_[rows_ -1][0];
+    }
+    else if (pos_x == rows_ && pos_y == -1) {
+      return *celulas_[0][colums_ - 1];
+    }
+    else if (pos_x == rows_ && pos_y == colums_) {
+      return *celulas_[0][0];
+    }
+    else if (pos_x == -1) {
+      return *celulas_[rows_ - 1][pos_y];
+    }
+    else if (pos_x == rows_) {
+      return *celulas_[0][pos_y];
+    }
+    else if (pos_y == -1) {
+      return *celulas_[pos_x][colums_ - 1];
+    }
+    else if (pos_y == colums_) {
+      return *celulas_[pos_x][0];
+    }
+    else {
+      return *celulas_[pos_x][pos_y];
+    }
+  }
+  else {
+    if (pos_x == -1 && pos_y == -1) {
+      return *celulas_[0][0];
+    }
+    else if (pos_x == -1 && pos_y == colums_) {
+      return *celulas_[0][pos_y - 1];
+    }
+    else if (pos_x == rows_ && pos_y == -1) {
+      return *celulas_[pos_x - 1][0];
+    }
+    else if (pos_x == rows_ && pos_y == colums_) {
+      return *celulas_[pos_x -1][pos_y - 1];
+    }
+    else if (pos_x == -1) {
+      return *celulas_[0][pos_y];
+    }
+    else if (pos_x == rows_) {
+      return *celulas_[rows_ - 1][pos_y];
+    }
+    else if (pos_y == -1) {
+      return *celulas_[pos_x][0];
+    }
+    else if (pos_y == colums_) {
+      return *celulas_[pos_x][pos_y - 1];
+    }
+    else {
+      return *celulas_[pos_x][pos_y];
+    }
+  }
 }
 
 std::ostream& operator <<(std::ostream& out, Lattice const& reticulo) {
@@ -204,5 +270,45 @@ void Lattice::updateN_generation() {
 }
 
 Lattice::~Lattice() {
-  //hacer
+  for(int i = 0; i < rows_; ++i) {
+    for (int j = 0; j < colums_; ++j) {
+      delete celulas_[i][j];
+    }
+  }
+}
+
+void Lattice::insertUpperRow() {
+  ++rows_;
+  std::vector<Cell*> fila(colums_);
+  for(int i = 0; i < fila.size(); ++i) {
+    fila[i] = new Cell(Position(highCorner_.getPosX() - 1, i), State(0));
+  }
+  celulas_.insert(celulas_.begin(), fila);
+  highCorner_ = Position(highCorner_.getPosX() - 1, highCorner_.getPosY());
+}
+
+void Lattice::insertDownRow() {
+  ++rows_;
+  std::vector<Cell*> fila(colums_);
+  for(int i = 0; i < fila.size(); ++i) {
+    fila[i] = new Cell(Position(lowCorner_.getPosX() + 1, i), State(0));
+  }
+  celulas_.insert(celulas_.end(), fila);
+  lowCorner_ = Position(lowCorner_.getPosX() + 1, lowCorner_.getPosY());
+}
+
+void Lattice::insertLeftColum() {
+  ++colums_;
+  for (int i = 0; i < rows_; ++i) {
+    celulas_[i].insert(celulas_[i].begin(), new Cell(Position(i, highCorner_.getPosY() - 1), State(0)));
+  }
+  highCorner_ = Position(highCorner_.getPosX(), highCorner_.getPosY() - 1);
+}
+
+void Lattice::insertRightColum() {
+  ++colums_;
+  for (int i = 0; i < rows_; ++i) {
+    celulas_[i].insert(celulas_[i].end(), new Cell(Position(lowCorner_.getPosX(), lowCorner_.getPosY() +1), State(0)));
+  }
+  lowCorner_ = Position(lowCorner_.getPosX(), lowCorner_.getPosY() + 1);
 }

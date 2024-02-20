@@ -12,7 +12,7 @@ class Cell;
 
 class Lattice {
   public:
-    ~Lattice();  // hacer
+    ~Lattice(); 
     Lattice();
     Lattice(int N, int M, std::string frontera); 
     Lattice(std::string fichero, std::string frontera); 
@@ -24,15 +24,20 @@ class Lattice {
     std::string getBorderType() {return borderType_;};
     int getN_generation() const {return n_generation_;};
     void updateN_generation();
-    //sobrecarga operador []
   private:
     std::vector<std::vector<Cell*>> celulas_;
     int rows_;
     int colums_;
     std::string borderType_;
     int n_generation_;
+    void insertUpperRow();
+    void insertDownRow();
+    void insertLeftColum();
+    void insertRightColum();
+    Position highCorner_;
+    Position lowCorner_;
 };
 
-std::ostream& operator<<(std::ostream&, const Lattice&); // hacer (sobrecarga [])
+std::ostream& operator<<(std::ostream&, const Lattice&); 
 
 #endif
