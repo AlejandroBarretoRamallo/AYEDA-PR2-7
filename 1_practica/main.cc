@@ -11,7 +11,8 @@ int main(int argc, char* argv[]) {
     std::cout << "Numero de parametros incorrecto\n";
     return 0;
   }
-  if (argv[1] == "-h") {
+  std::string arg = argv[1];
+  if (arg == "-h") {
     std::cout << "Se debe introducir el tamaño del reticulo, y despues el tipo de frontera(caliente, fria o periodica\n";
     std::cout << "Si se desea, se puede obtener la ristra inicial desde un fichero indicando su nombre\n";
     return 0;
