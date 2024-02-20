@@ -48,7 +48,20 @@ Lattice::Lattice(const std::string& configuracion, const std::string& frontera) 
 }
 
 const Cell& Lattice::getCell(const Position& position) const {
-  return celulas_[position.getPosition()];
+  if (borderType_ == "periodica") {
+    if (position.getPosition() == -1) {
+      return celulas_[size_ - 1];
+    }
+    else if (position.getPosition() == size_) {
+      return celulas_[0];
+    }
+    else {
+      return celulas_[position.getPosition()];
+    }
+  }
+  else {
+    return celulas_[position.getPosition()];
+  }
 }
 
 Cell* Lattice::getCelulas() {
