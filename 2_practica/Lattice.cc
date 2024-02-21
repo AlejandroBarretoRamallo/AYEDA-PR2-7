@@ -357,7 +357,7 @@ int Lattice::Border() {
   }
   for (int i = 1; i < colums_ - 1; ++i) {
     if (celulas_[rows_ -1][i]->getState().getstate() == 1) {
-      return 4;
+      return 3;
     }
   }
   return 0;
