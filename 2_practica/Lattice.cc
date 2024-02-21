@@ -264,7 +264,42 @@ void Lattice::nextGeneration() {
     }
   }
   else {
-
+    int border = 1;
+    while (border != 0) {
+      border = Border();
+      switch (border) {
+        case 0:
+          break;
+        case 1: // añadir fila por arriba
+          insertUpperRow();
+          break;
+        case 2:  // añadir columna por la izquierda
+          insertLeftColum();
+          break;
+        case 3:   // añadir fila por debajo
+          insertDownRow();
+          break;
+        case 4:    // añadir columna por la derecha
+          insertRightColum();
+          break;
+        case 5:     //añadir fila y columna inicial
+          insertLeftColum();
+          insertUpperRow();
+          break;
+        case 6:      //añadir fila inicial y columna final
+          insertUpperRow();
+          insertRightColum();
+          break;    
+        case 7:     //añadir fila final y columan inicial
+          insertDownRow();
+          insertLeftColum();
+          break;     
+        case 8:     // añadir fila y columna final
+          insertDownRow();
+          insertRightColum();
+          break;
+      }
+    }
   }
 }
 
@@ -323,9 +358,9 @@ void Lattice::insertRightColum() {
    * @return Devuelve 3 si hay una celula viva en la fila n - 1
    * @return Devuelve 4 si hay una celula viva en la columna n-1
    * @return Devuelve 5 si hay una celula viva en la esquina 0,0
-   * @return Devuelve 6 si hay una celula viva EN LA ESQUINA 0, n-1
-   * @return Devuelve 7 si hay una celula viva EN LA ESQUINA n - 1, 0
-   * @return Devuelve 8 si hay una celula viva EN LA ESQUINA n - 1, n - 1
+   * @return Devuelve 6 si hay una celula viva en la esquina 0, n-1
+   * @return Devuelve 7 si hay una celula viva en la esquina n - 1, 0
+   * @return Devuelve 8 si hay una celula viva en la esquina n - 1, n - 1
   */
 int Lattice::Border() {
   if (celulas_[0][0]->getState().getstate() == 1) {
