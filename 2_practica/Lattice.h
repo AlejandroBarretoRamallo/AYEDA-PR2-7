@@ -36,6 +36,7 @@ class Lattice {
     void insertRightColum();
     Position highCorner_;
     Position lowCorner_;
+    int Border();  
 };
 
 std::ostream& operator<<(std::ostream&, const Lattice&); 

@@ -251,7 +251,7 @@ void Lattice::nextGeneration() {
       }
     }
   }
-  else {
+  else  if (borderType_ != "noborder") {
     for(int i = 0; i < rows_; ++i) {
       for (int j = 0; j < colums_; ++j) {
         celulas_[i][j]->setNextState(celulas_[i][j]->NextState(*this));
@@ -262,6 +262,9 @@ void Lattice::nextGeneration() {
         celulas_[i][j]->updateState();
       }
     }
+  }
+  else {
+
   }
 }
 
@@ -311,4 +314,51 @@ void Lattice::insertRightColum() {
     celulas_[i].insert(celulas_[i].end(), new Cell(Position(lowCorner_.getPosX(), lowCorner_.getPosY() +1), State(0)));
   }
   lowCorner_ = Position(lowCorner_.getPosX(), lowCorner_.getPosY() + 1);
+}
+
+/**
+   * @return Devuelve 0 si no hay niguna celula viva en el borde
+   * @return Deveulve 1 si hay una celula viva en la fila 0
+   * @return Devuelve 2 si hay una celula viva en la columna 0
+   * @return Devuelve 3 si hay una celula viva en la fila n - 1
+   * @return Devuelve 4 si hay una celula viva en la columna n-1
+   * @return Devuelve 5 si hay una celula viva en la esquina 0,0
+   * @return Devuelve 6 si hay una celula viva EN LA ESQUINA 0, n-1
+   * @return Devuelve 7 si hay una celula viva EN LA ESQUINA n - 1, 0
+   * @return Devuelve 8 si hay una celula viva EN LA ESQUINA n - 1, n - 1
+  */
+int Lattice::Border() {
+  if (celulas_[0][0]->getState().getstate() == 1) {
+    return 5;
+  }
+  if (celulas_[0][colums_ - 1]->getState().getstate() == 1) {
+    return 6;
+  }
+  if (celulas_[rows_ - 1][0]->getState().getstate() == 1) {
+    return 7;
+  }
+  if (celulas_[rows_ - 1][colums_ - 1]->getState().getstate() == 1) {
+    return 8;
+  }
+  for (int i = 1; i < rows_ - 1; ++i) {
+    if (celulas_[i][0]->getState().getstate() == 1) {
+      return 2;
+    }
+  }
+  for (int i = 1; i < colums_ - 1; ++i) {
+    if (celulas_[0][i]->getState().getstate() == 1) {
+      return 1;
+    }
+  }
+  for (int i = 1; i < rows_ - 1; ++i) {
+    if (celulas_[i][colums_ - 1]->getState().getstate() == 1) {
+      return 4;
+    }
+  }
+  for (int i = 1; i < colums_ - 1; ++i) {
+    if (celulas_[rows_ -1][i]->getState().getstate() == 1) {
+      return 4;
+    }
+  }
+  return 0;
 }
