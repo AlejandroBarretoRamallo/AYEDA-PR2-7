@@ -14,12 +14,12 @@ Lattice::Lattice() {
 
 Lattice::Lattice(int N, int M, std::string borderType) {
   borderType_ = borderType;
-  if (borderType_ == "periodica" || borderType_ == "noborder" || borderType_ == "reflectora") {
-    celulas_ = std::vector<std::vector<Cell*>>(N, std::vector<Cell*>(M, nullptr));
+  if (borderType_ == "periodica" || borderType_ == "noborder" || borderType_ == "reflectora") {   // si no es abierta no hay que añadir celulas, se crean de la misma forma
+    celulas_ = std::vector<std::vector<Cell*>>(N, std::vector<Cell*>(M, nullptr));    // vector de vectores vacio
     std::cout << "Introduzca el numero de celulas que van a estar vivas: ";
     int num_celulas = 0;
     std::cin >> num_celulas;
-    for (int i = 0; i < num_celulas; ++i) {
+    for (int i = 0; i < num_celulas; ++i) {     // rellenar manualmente la matriz
       std::cout << "Introduce la coordenada x de la celula: ";
       int x, y;
       std::cin >> x;
@@ -27,7 +27,7 @@ Lattice::Lattice(int N, int M, std::string borderType) {
       std::cin >> y;
       celulas_[x][y] = new Cell(Position(x, y), State(1));
     }
-    for (int i = 0; i < N; ++i) {
+    for (int i = 0; i < N; ++i) {   // todas las que no se han creado como vivas se crean con estado 0
       for(int j = 0; j < M; ++j) {
         if (celulas_[i][j] == nullptr) {
           celulas_[i][j] = new Cell(Position(i, j), State(0));

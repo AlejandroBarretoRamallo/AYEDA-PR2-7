@@ -19,8 +19,6 @@ void generations(Lattice& reticulo) {
     std::cout << "Generacion: " << reticulo.getN_generation() << "\n";
     std::cout << "-------------------------------------------\n";
     reticulo.updateN_generation();
-    reticulo.insertRightColum();
-    reticulo.insertRightColum();
     if (std::cin.get() == 's') {
       break;
     }

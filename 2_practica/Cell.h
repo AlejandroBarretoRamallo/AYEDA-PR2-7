@@ -17,7 +17,7 @@ class Cell {
     void updateState(); 
     void setNextState(const int&);
     int NextState(Lattice&) const;
-    bool IsBorder(Lattice&) const; 
+    bool IsBorder(Lattice&) const;    // detecta si esta en un borde
     State getNextState() { return next_state_;};
   private:
     State state_;
