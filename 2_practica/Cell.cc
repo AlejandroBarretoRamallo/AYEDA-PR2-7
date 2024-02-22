@@ -1,9 +1,9 @@
 #include "Cell.h"
 
-Cell::Cell(const Position& position, const  State& state) {
+Cell::Cell(const Position& position, const  State& state) {  
   state_ = state;
   position_ = position;
-  State next_state(0);
+  State next_state(0);        // el estado siguiente por defecto es 0
   next_state_ = next_state;
 }
 
@@ -21,15 +21,7 @@ void Cell::updateState() {
   state_ = next_state_;
 }
 
-std::ostream& operator<<(std::ostream& out, const Cell& cell) {
-  if(cell.getState().getstate()) {
-    std::cout << "X";
-  }
-  else {
-    std::cout << " ";
-  }
-  return out;
-}
+
 
 int Cell::NextState(Lattice& reticulo) const{
   int celulas_vivas = 0;
@@ -73,8 +65,8 @@ bool Cell::IsBorder(Lattice& reticulo) const {
   return false;
 }
 
-std::ostream& operator<<(std::ostream& out, Cell& celula) {
-  if (celula.getState().getstate() == 1) {
+std::ostream& operator<<(std::ostream& out, const Cell& cell) {
+  if(cell.getState().getstate()) {
     std::cout << "X";
   }
   else {
@@ -82,7 +74,6 @@ std::ostream& operator<<(std::ostream& out, Cell& celula) {
   }
   return out;
 }
-
 void Cell::setNextState(const int& state) {
   next_state_ = State(state);
 }
