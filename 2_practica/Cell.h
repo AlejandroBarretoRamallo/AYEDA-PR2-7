@@ -16,7 +16,7 @@ class Cell {
     State getState() const;
     void updateState(); 
     void setNextState(const int&);
-    int NextState(Lattice&) const;  // falta no border
+    int NextState(Lattice&) const;
     bool IsBorder(Lattice&) const; 
     State getNextState() { return next_state_;};
   private:

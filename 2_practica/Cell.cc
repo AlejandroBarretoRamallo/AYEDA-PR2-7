@@ -37,7 +37,6 @@ int Cell::NextState(Lattice& reticulo) const{
   int pos_y = position_.getPosY();
   int n_filas = reticulo.getRows();
   int n_colums = reticulo.getColumns();
-  std::string borderType = reticulo.getBorderType();
   celulas_vivas += reticulo.getCell(Position(pos_x - 1, pos_y - 1)).getState().getstate();   // n -1 ,m -1
   celulas_vivas += reticulo.getCell(Position(pos_x - 1, pos_y)).getState().getstate();       //n -1 ,m
   celulas_vivas += reticulo.getCell(Position(pos_x - 1, pos_y + 1)).getState().getstate();   //n - 1, m + 1

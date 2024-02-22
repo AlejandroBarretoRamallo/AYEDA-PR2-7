@@ -19,6 +19,8 @@ void generations(Lattice& reticulo) {
     std::cout << "Generacion: " << reticulo.getN_generation() << "\n";
     std::cout << "-------------------------------------------\n";
     reticulo.updateN_generation();
+    reticulo.insertRightColum();
+    reticulo.insertRightColum();
     if (std::cin.get() == 's') {
       break;
     }
@@ -42,7 +44,7 @@ int main(int argc, char* argv[]) {
     help();
     return 0;
   }
-  if (argc == 3) {
+  if (argc == 3) {  
     std::string borderType = argv[2];
     std::string fichero = argv[1];
     Lattice reticulo(fichero, borderType);

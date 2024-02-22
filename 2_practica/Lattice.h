@@ -24,21 +24,22 @@ class Lattice {
     std::string getBorderType() {return borderType_;};
     int getN_generation() const {return n_generation_;};
     void updateN_generation();
+    void insertRightColum();
+    friend std::ostream& operator<<(std::ostream&, const Lattice&); 
   private:
     std::vector<std::vector<Cell*>> celulas_;
     int rows_;
     int colums_;
     std::string borderType_;
     int n_generation_;
-    void insertUpperRow();
     void insertDownRow();
     void insertLeftColum();
-    void insertRightColum();
+    void insertUpperRow();
     Position highCorner_;
     Position lowCorner_;
     int Border();  
 };
 
-std::ostream& operator<<(std::ostream&, const Lattice&); 
+
 
 #endif

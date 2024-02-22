@@ -197,7 +197,7 @@ const Cell& Lattice::getCell(const Position& position) const {
       return *celulas_[pos_x][pos_y];
     }
   }
-  else {
+  else  if (borderType_ == "reflectora") {
     if (pos_x == -1 && pos_y == -1) {
       return *celulas_[0][0];
     }
@@ -226,17 +226,11 @@ const Cell& Lattice::getCell(const Position& position) const {
       return *celulas_[pos_x][pos_y];
     }
   }
+  else {
+    return *celulas_[pos_x -highCorner_.getPosX()][pos_y - highCorner_.getPosY()];
+  }
 }
 
-std::ostream& operator <<(std::ostream& out, Lattice const& reticulo) {
-  for(int i = 0; i < reticulo.getRows(); ++i) {
-    for(int j = 0; j < reticulo.getColumns(); ++j) {
-      std::cout << reticulo.getCell(Position(i, j));
-    }
-    std::cout << "\n";
-  }
-  return out;
-}
 
 void Lattice::nextGeneration() {
   if (borderType_ != "periodica" && borderType_ != "reflectora" && borderType_ != "noborder") {
@@ -300,6 +294,16 @@ void Lattice::nextGeneration() {
           break;
       }
     }
+    for(int i = 1; i < rows_ - 1; ++i) {
+      for (int j = 1; j < colums_ - 1; ++j) {
+        celulas_[i][j]->setNextState(celulas_[i][j]->NextState(*this));
+      }
+    }
+    for(int i = 0; i < rows_ - 1; ++i) {
+      for (int j = 0; j < colums_ - 1; ++j) {
+        celulas_[i][j]->updateState();
+      }
+    }
   }
 }
 
@@ -315,30 +319,30 @@ Lattice::~Lattice() {
   }
 }
 
-void Lattice::insertUpperRow() {
+void Lattice::insertUpperRow() {     
   ++rows_;
   std::vector<Cell*> fila(colums_);
   for(int i = 0; i < fila.size(); ++i) {
-    fila[i] = new Cell(Position(highCorner_.getPosX() - 1, i), State(0));
+    fila[i] = new Cell(Position(highCorner_.getPosX() - 1, i + highCorner_.getPosY()), State(0));
   }
   celulas_.insert(celulas_.begin(), fila);
   highCorner_ = Position(highCorner_.getPosX() - 1, highCorner_.getPosY());
 }
 
-void Lattice::insertDownRow() {
+void Lattice::insertDownRow() {   
   ++rows_;
   std::vector<Cell*> fila(colums_);
   for(int i = 0; i < fila.size(); ++i) {
-    fila[i] = new Cell(Position(lowCorner_.getPosX() + 1, i), State(0));
+    fila[i] = new Cell(Position(lowCorner_.getPosX() + 1, i +highCorner_.getPosY()), State(0));
   }
   celulas_.insert(celulas_.end(), fila);
   lowCorner_ = Position(lowCorner_.getPosX() + 1, lowCorner_.getPosY());
 }
 
-void Lattice::insertLeftColum() {
+void Lattice::insertLeftColum() {   
   ++colums_;
   for (int i = 0; i < rows_; ++i) {
-    celulas_[i].insert(celulas_[i].begin(), new Cell(Position(i, highCorner_.getPosY() - 1), State(0)));
+    celulas_[i].insert(celulas_[i].begin(), new Cell(Position(i + highCorner_.getPosX(), highCorner_.getPosY() - 1), State(0)));
   }
   highCorner_ = Position(highCorner_.getPosX(), highCorner_.getPosY() - 1);
 }
@@ -346,11 +350,10 @@ void Lattice::insertLeftColum() {
 void Lattice::insertRightColum() {
   ++colums_;
   for (int i = 0; i < rows_; ++i) {
-    celulas_[i].insert(celulas_[i].end(), new Cell(Position(lowCorner_.getPosX(), lowCorner_.getPosY() +1), State(0)));
+    celulas_[i].insert(celulas_[i].end(), new Cell(Position(highCorner_.getPosX() + i, lowCorner_.getPosY() +1), State(0)));
   }
   lowCorner_ = Position(lowCorner_.getPosX(), lowCorner_.getPosY() + 1);
 }
-
 /**
    * @return Devuelve 0 si no hay niguna celula viva en el borde
    * @return Deveulve 1 si hay una celula viva en la fila 0
@@ -396,4 +399,14 @@ int Lattice::Border() {
     }
   }
   return 0;
+}
+
+std::ostream& operator <<(std::ostream& out, Lattice const& reticulo) {
+  for(int i = 0; i < reticulo.getRows(); ++i) {
+    for(int j = 0; j < reticulo.getColumns(); ++j) {
+      std::cout << *reticulo.celulas_[i][j];
+    }
+    std::cout << "\n";
+  }
+  return out;
 }

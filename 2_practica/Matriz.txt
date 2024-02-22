@@ -1,5 +1,12 @@
-3
-3
-x  
-xxx
-  x
+10
+10
+   xxx    
+          
+x        x
+x        x
+x        x
+          
+          
+
+
+   xxx    
