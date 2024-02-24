@@ -407,9 +407,21 @@ int Lattice::Border() {
 std::ostream& operator <<(std::ostream& out, Lattice const& reticulo) {
   for(int i = 0; i < reticulo.getRows(); ++i) { // recorrer toda la matriz
     for(int j = 0; j < reticulo.getColumns(); ++j) {
-      std::cout << *reticulo.celulas_[i][j];
+      out << *reticulo.celulas_[i][j];
     }
-    std::cout << "\n";
+    out << "\n";
   }
   return out;
+}
+
+std::size_t Lattice::Population() const {
+  size_t population = 0;
+  for (int i = 0; i < rows_; ++i) {
+    for (int j = 0; j < colums_; ++j) {
+      if (celulas_[i][j]->getState().getstate() == 1) {
+        ++population;
+      }
+    }
+  }
+  return population;
 }

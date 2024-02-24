@@ -67,10 +67,10 @@ bool Cell::IsBorder(Lattice& reticulo) const {
 
 std::ostream& operator<<(std::ostream& out, const Cell& cell) {
   if(cell.getState().getstate()) {
-    std::cout << "X";
+    out << "X";
   }
   else {
-    std::cout << " ";
+    out << " ";
   }
   return out;
 }

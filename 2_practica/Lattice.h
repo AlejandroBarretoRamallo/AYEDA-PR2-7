@@ -23,7 +23,7 @@ class Lattice {
     std::string getBorderType() {return borderType_;};
     int getN_generation() const {return n_generation_;};
     void updateN_generation();
-    
+    std::size_t Population() const;
     friend std::ostream& operator<<(std::ostream&, const Lattice&); 
   private:
     std::vector<std::vector<Cell*>> celulas_;
