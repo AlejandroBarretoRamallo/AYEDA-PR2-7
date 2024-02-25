@@ -230,6 +230,10 @@ const Cell& Lattice::getCell(const Position& position) const {
   }
   else {
     // si es no border se ajusta para que tambien devuelva las posiciones negativas si existiesen
+    if (pos_x < highCorner_.getPosX() || pos_x > lowCorner_.getPosX() || pos_y < highCorner_.getPosY() || pos_y > lowCorner_.getPosY()) { 
+      Cell* celula = new Cell(Position(pos_x, pos_y), State(0));
+      return *celula;
+    }
     return *celulas_[pos_x -highCorner_.getPosX()][pos_y - highCorner_.getPosY()];
   }
 }
@@ -297,13 +301,13 @@ void Lattice::nextGeneration() {
           break;
       }
     }
-    for(int i = 1; i < rows_ - 1; ++i) {  // se reocrre el inteiror porque aquellas que esten en los bordes tienen por defecto estado siguiente a 0
-      for (int j = 1; j < colums_ - 1; ++j) {
+    for(int i = 0; i < rows_; ++i) { 
+      for (int j = 0; j < colums_; ++j) {
         celulas_[i][j]->setNextState(celulas_[i][j]->NextState(*this));
       }
     }
-    for(int i = 0; i < rows_ - 1; ++i) {    // todas se actualizan
-      for (int j = 0; j < colums_ - 1; ++j) {
+    for(int i = 0; i < rows_; ++i) {    // todas se actualizan
+      for (int j = 0; j < colums_; ++j) {
         celulas_[i][j]->updateState();
       }
     }
