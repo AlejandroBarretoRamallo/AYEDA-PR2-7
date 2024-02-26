@@ -311,6 +311,42 @@ void Lattice::nextGeneration() {
         celulas_[i][j]->updateState();
       }
     }
+    border = 1;
+    while (border != 0) {
+      border = Border();  // calcula en que borde hay celulas vivas
+      switch (border) {
+        case 0:
+          break;
+        case 1: // añadir fila por arriba
+          insertUpperRow();
+          break;
+        case 2:  // añadir columna por la izquierda
+          insertLeftColum();
+          break;
+        case 3:   // añadir fila por debajo
+          insertDownRow();
+          break;
+        case 4:    // añadir columna por la derecha
+          insertRightColum();
+          break;
+        case 5:     //añadir fila y columna inicial
+          insertLeftColum();
+          insertUpperRow();
+          break;
+        case 6:      //añadir fila inicial y columna final
+          insertUpperRow();
+          insertRightColum();
+          break;    
+        case 7:     //añadir fila final y columan inicial
+          insertDownRow();
+          insertLeftColum();
+          break;     
+        case 8:     // añadir fila y columna final
+          insertDownRow();
+          insertRightColum();
+          break;
+      }
+    }
   }
 }
 
