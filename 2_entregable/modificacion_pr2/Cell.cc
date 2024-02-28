@@ -46,7 +46,7 @@ int Cell::NextState(Lattice& reticulo) const{
     }
   }
   else {
-    if (celulas_vivas == 3) {
+    if (celulas_vivas == 3 || celulas_vivas == 6) {
       return 1;
     }
     else {
