@@ -216,13 +216,13 @@ Cell& Lattice2D_reflective::operator[](const Position& position) const {
 Cell& Lattice2D_noborder::operator[](const Position& position) const {
   int pos_x = position[0];
   int pos_y = position[1];
-  if (pos_x < 0 || pos_x >= rows_ || pos_y < 0 || pos_y >= columns_) {
+  if (pos_x < origen_[0] || pos_x > fin_[0] || pos_y < origen_[0] || pos_y > fin_[1]) {
     State state(0);
     PositionDim<2>* posicion = new PositionDim<2>(2, pos_x, pos_y);
     return *tipoCelula_.createCell(posicion, state);
   }
   else {
-    return *celulas_[pos_x][pos_y];
+    return *celulas_[pos_x - origen_[0]][pos_y - origen_[1]];
   }
 }
 
@@ -287,7 +287,7 @@ void Lattice2D_noborder::nextGeneration() {
   }
   for(int i = 0; i < rows_; ++i) { 
     for (int j = 0; j < columns_; ++j) {
-      
+      celulas_[i][j]->setNextState(State(celulas_[i][j]->nextState(*this)));
     }
   }
   for(int i = 0; i < rows_; ++i) {    // todas se actualizan
@@ -409,7 +409,7 @@ void Lattice2D_noborder::insertLowerRow() {
 void Lattice2D_noborder::insertLeftColumn() {
   ++columns_;
   for (int i = 0; i < rows_; ++i) {   // insertamos al principio de cada vector una celula muerta teniendo en cuenta posiciones negativas
-  PositionDim<2>* posicion = new PositionDim<2>(2,i + origen_[0], origen_[1] - 1);
+    PositionDim<2>* posicion = new PositionDim<2>(2,i + origen_[0], origen_[1] - 1);
     celulas_[i].insert(celulas_[i].begin(), tipoCelula_.createCell(posicion, State(0)));
   }
   PositionDim<2> origen(2, origen_[0], origen_[1] - 1);

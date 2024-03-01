@@ -20,6 +20,7 @@ class Cell {
     virtual void updateState() = 0;
     void setNextState(const State&);
     friend std::ostream& operator<<(std::ostream&, const Cell&);
+    Position* getPosition() const {return position_;}; // borrar
   protected:
     virtual std::ostream& display(std::ostream&) const = 0;
     State state_;

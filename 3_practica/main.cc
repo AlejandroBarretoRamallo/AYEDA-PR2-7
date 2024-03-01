@@ -13,10 +13,10 @@ void help() {
 
 void generations(Lattice& lattice, int dim) {
   std::cout << lattice;
-  std::cout << "-------------------------------------------\n";
-  std::cout << "Generacion: " << lattice.getN_generation() << "\n";
-  std::cout << "-------------------------------------------\n";
-  lattice.updateN_generation();
+  //std::cout << "-------------------------------------------\n";
+  //std::cout << "Generacion: " << lattice.getN_generation() << "\n";
+  //std::cout << "-------------------------------------------\n";
+  //lattice.updateN_generation();
   bool population = false;
   char opcion;
   while(true) {
@@ -28,10 +28,10 @@ void generations(Lattice& lattice, int dim) {
     else {
       lattice.nextGeneration();
       std::cout << lattice;
-      std::cout << "-------------------------------------------\n";
-      std::cout << "Generacion: " << lattice.getN_generation() << "\n";
-      std::cout << "-------------------------------------------\n";
-      lattice.updateN_generation();
+      //std::cout << "-------------------------------------------\n";
+      //std::cout << "Generacion: " << lattice.getN_generation() << "\n";
+      //std::cout << "-------------------------------------------\n";
+      //lattice.updateN_generation();
     }
     std::cin >> opcion;
     while (opcion != 'n' && opcion != 'x' && opcion != 'L' && opcion != 's' && opcion != 'c') {
