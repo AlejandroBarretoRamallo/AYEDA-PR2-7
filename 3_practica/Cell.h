@@ -12,6 +12,7 @@ class Lattice;
 
 class Cell {
   public:
+    ~Cell();
     Cell(Position*, const  State&); 
     State getState() const;   
     void setState(State);    
@@ -19,7 +20,6 @@ class Cell {
     virtual void updateState() = 0;
     void setNextState(const State&);
     friend std::ostream& operator<<(std::ostream&, const Cell&);
-    Position* getPosition() {return position_;}; //unicamente es utilizado para el destructuor del reticulo, no para calcular el estado siguiente
   protected:
     virtual std::ostream& display(std::ostream&) const = 0;
     State state_;

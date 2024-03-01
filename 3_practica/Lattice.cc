@@ -100,7 +100,6 @@ Lattice2D::Lattice2D(std::string fichero, FactoryCell& celula): origen_(2, 0, 0)
 Lattice1D::~Lattice1D() {
   for (int i = 0; i < size_; ++i) {
     delete celulas_[i];
-    delete celulas_[i]->getPosition();
   }
 }
 
@@ -108,7 +107,6 @@ Lattice2D::~Lattice2D() {
   for (int i = 0; i < rows_; ++i) {
     for (int j = 0; j < columns_; ++j) {
       delete celulas_[i][j];
-      delete celulas_[i][j]->getPosition();
     }
   }
 }

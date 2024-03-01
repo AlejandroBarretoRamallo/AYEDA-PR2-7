@@ -200,3 +200,7 @@ int CellLife51_346::nextState(Lattice& lattice) {
     }
   }
 }
+
+Cell::~Cell() {
+  delete position_;
+}
