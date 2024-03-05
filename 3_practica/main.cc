@@ -12,11 +12,17 @@ void help() {
 }
 
 void generations(Lattice& lattice, int dim) {
+  std::cout << "Estas son las opciones disponibles:\n";
+  std::cout << "n: siguiente generacion\n";
+  std::cout << "x: salir\n";
+  std::cout << "L: 5 generaciones\n";
+  std::cout << "s: guardar en un fichero\n";
+  std::cout << "c: cambiar entre mostrar la poblacion o no\n";
   std::cout << lattice;
-  //std::cout << "-------------------------------------------\n";
-  //std::cout << "Generacion: " << lattice.getN_generation() << "\n";
-  //std::cout << "-------------------------------------------\n";
-  //lattice.updateN_generation();
+  std::cout << "-------------------------------------------\n";
+  std::cout << "Generacion: " << lattice.getN_generation() << "\n";
+  std::cout << "-------------------------------------------\n";
+  lattice.updateN_generation();
   bool population = false;
   char opcion;
   while(true) {
@@ -28,10 +34,10 @@ void generations(Lattice& lattice, int dim) {
     else {
       lattice.nextGeneration();
       std::cout << lattice;
-      //std::cout << "-------------------------------------------\n";
-      //std::cout << "Generacion: " << lattice.getN_generation() << "\n";
-      //std::cout << "-------------------------------------------\n";
-      //lattice.updateN_generation();
+      std::cout << "-------------------------------------------\n";
+      std::cout << "Generacion: " << lattice.getN_generation() << "\n";
+      std::cout << "-------------------------------------------\n";
+      lattice.updateN_generation();
     }
     std::cin >> opcion;
     while (opcion != 'n' && opcion != 'x' && opcion != 'L' && opcion != 's' && opcion != 'c') {
