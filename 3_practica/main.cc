@@ -19,9 +19,9 @@ void generations(Lattice& lattice, int dim) {
   std::cout << "s: guardar en un fichero\n";
   std::cout << "c: cambiar entre mostrar la poblacion o no\n";
   std::cout << lattice;
-  std::cout << "-------------------------------------------\n";
-  std::cout << "Generacion: " << lattice.getN_generation() << "\n";
-  std::cout << "-------------------------------------------\n";
+ // std::cout << "-------------------------------------------\n";
+ // std::cout << "Generacion: " << lattice.getN_generation() << "\n";
+ // std::cout << "-------------------------------------------\n";
   lattice.updateN_generation();
   bool population = false;
   char opcion;

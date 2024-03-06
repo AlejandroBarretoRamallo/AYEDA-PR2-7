@@ -35,7 +35,7 @@ class Lattice1D: public Lattice {
   public:
     ~Lattice1D();
     virtual Cell& operator[](const Position&) const = 0;
-    void nextGeneration();  
+    virtual void nextGeneration() = 0;  
     std::size_t Population() const; 
     std::ostream& display(std::ostream&); 
     Lattice1D(int, FactoryCell&); 
@@ -51,9 +51,10 @@ class Lattice1D: public Lattice {
 
 class Lattice1D_open: public Lattice1D {
   public:
-    Lattice1D_open(int size, FactoryCell& celula, int border): Lattice1D(size, celula) {border_ = border;};
-    Lattice1D_open(std::string fichero, FactoryCell& celula, int border): Lattice1D(fichero, celula) { border_ = border;};
+    Lattice1D_open(int size, FactoryCell& celula, int border);
+    Lattice1D_open(std::string fichero, FactoryCell& celula, int border);
     Cell& operator[](const Position&) const;
+    void nextGeneration();
   private:
   int border_;
 };
@@ -63,6 +64,7 @@ class Lattice1D_periodic: public Lattice1D {
     Lattice1D_periodic(int size, FactoryCell& celula): Lattice1D(size, celula) {}; 
     Lattice1D_periodic(std::string fichero, FactoryCell& celula): Lattice1D(fichero, celula) {};
     Cell& operator[](const Position&) const;
+    void nextGeneration();
 };
 
 class Lattice2D: public Lattice {

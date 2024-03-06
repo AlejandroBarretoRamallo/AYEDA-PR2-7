@@ -23,6 +23,24 @@ Lattice1D::Lattice1D(int size, FactoryCell& celula): tipoCelula_(celula){
   }
 }
 
+Lattice1D_open::Lattice1D_open(int size, FactoryCell& celula, int border): Lattice1D(size, celula) {
+  border_ = border;
+  PositionDim<1>* pos = new PositionDim<1>(1, -1);
+  celulas_.insert(celulas_.begin(), celula.createCell(pos, State(border)));  // insertamos la celula de frontera al principio
+  pos = new PositionDim<1>(1, size);
+  celulas_.insert(celulas_.end(), celula.createCell(pos, State(border)));  // insertamos la celula de frontera al final
+  size_ += 2;  // aumentamos el tamaño
+}
+
+Lattice1D_open::Lattice1D_open(std::string fichero, FactoryCell& celula, int border): Lattice1D(fichero, celula) {
+  border_ = border;
+  PositionDim<1>* pos = new PositionDim<1>(1, -1);
+  celulas_.insert(celulas_.begin(), celula.createCell(pos, State(border)));  // insertamos la celula de frontera al principio
+  pos = new PositionDim<1>(1, size_);
+  celulas_.insert(celulas_.end(), celula.createCell(pos, State(border)));  // insertamos la celula de frontera al final
+  size_ += 2;  // aumentamos el tamaño
+}
+
 Lattice1D::Lattice1D(std::string fichero, FactoryCell& celula): tipoCelula_(celula) {
   n_generation_ = 0;
   std::ifstream input(fichero);     // abrimos el fichero
@@ -156,17 +174,7 @@ std::ostream& Lattice2D::display(std::ostream& out) {
 }
 
 Cell& Lattice1D_open::operator[](const Position& position) const {
-  if (position[0] < 0 || position[0] >= size_) {
-    State state(0);
-    if (border_ == 1) {
-      state.setState(1);
-    }
-    PositionDim<1>* posicion = new PositionDim<1>(1,0);
-    return  *tipoCelula_.createCell(posicion, state);
-  }
-  else {
-    return *celulas_[position[0]];
-  }
+  return *celulas_[position[0] + 1];
 }
 
 Cell& Lattice1D_periodic::operator[](const Position& position) const {
@@ -226,7 +234,16 @@ Cell& Lattice2D_noborder::operator[](const Position& position) const {
   }
 }
 
-void Lattice1D::nextGeneration() {
+void Lattice1D_open::nextGeneration() {
+  for (int i = 1; i < size_ - 1; ++i) {
+    celulas_[i]->setNextState(State(celulas_[i]->nextState(*this)));
+  }
+  for (int i = 1; i < size_ - 1; ++i) {
+    celulas_[i]->updateState();
+  }
+}
+
+void Lattice1D_periodic::nextGeneration() {
   for (int i = 0; i < size_; ++i) {
     celulas_[i]->setNextState(State(celulas_[i]->nextState(*this)));
   }
