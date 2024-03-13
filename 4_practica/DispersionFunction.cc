@@ -9,7 +9,7 @@ DispersionFunction<key>::DispersionFunction(unsigned tableSize) {
 template<class key>
 
 unsigned Module_DispersionFunction<key>::operator()(const key& clave) const {
-  return clave % tableSize_;
+  return clave % this -> tableSize_;
 }
 
 template <class key>
@@ -20,11 +20,11 @@ unsigned Sum_DispersionFunction<key>::operator()(const key& clave) const {
     sum += clave % 10;
     clave /= 10;
   }
-  return clave % tableSize_;
+  return clave % this -> tableSize_;
 }
 
 template <class key>
 
 unsigned Random_DispersionFunction<key>::operator()(const key& clave) const {
-  return rand(srand(clave)) % tableSize_;
+  return rand(srand(clave)) % this -> tableSize_;
 }

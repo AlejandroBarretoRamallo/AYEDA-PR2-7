@@ -9,23 +9,23 @@ ExplorationFunction<key>::ExplorationFunction(unsigned tableSize) {
 template<class key>
 
 unsigned Lineal_ExplorationFunction<key>::operator()(const key& clave, unsigned i) const {
-  return i % tableSize_;
+  return i % this-> tableSize_;
 }
 
 template <class key>
 
 unsigned Cuadratic_ExplorationFunction<key>::operator()(const key& clave, unsigned i) const {
-  return (i * i) % tableSize_;
+  return (i * i) % this -> tableSize_;
 }
 
 template <class key>
 
 unsigned bidispersion_ExplorationFunction<key>::operator()(const key& clave, unsigned i) const {
-  return (dispersionFunction_(clave) * i) % tableSize_;
+  return (dispersionFunction_(clave) * i) % this -> tableSize_;
 }
 
 template <class key>
 
 unsigned Redispersion_ExplorationFunction<key>::operator()(const key& clave, unsigned i) const {
-  return (dispersionFunction_(dispersionFunction_(clave))) % tableSize_;
+  return (dispersionFunction_(dispersionFunction_(clave))) % this -> tableSize_;
 }

@@ -11,6 +11,9 @@ template <class key, class Container = staticSequence<key> >
 class HashTable {
   public:
     HashTable(unsigned,DispersionFunction<key>&, ExplorationFunction<key>&,unsigned);
+    bool search(const key&)const;
+    bool insert(const key&)const; // hacer
+    bool isFull()const;
   private:
     unsigned tableSize_;
     DispersionFunction<key>& fd_;
@@ -19,14 +22,18 @@ class HashTable {
     Container* table_;
 };
 
-template <class key, class Container>
+template <class key>
 
-class HashTable <key, dynamicSequence<key>> {
+class HashTable <key> {
   public:
     HashTable(unsigned, DispersionFunction<key>&);
+    bool search(const key&)const;
+    bool insert(const key&)const; // hacer
+    bool isFull()const;
   private:
-    Container* table_;
+    dynamicSequence<key>* table_;
     unsigned tableSize_;
+    DispersionFunction<key> fd_;
 };
 
 #endif
