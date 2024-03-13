@@ -60,7 +60,7 @@ bool HashTable<key, Container>::search(const key& clave)const {
   if (table_[pos].search(clave)) {
     return true;
   }
-  for (int i = 0; i < tableSize_; ++i) {
+  for (int i = 1; i < tableSize_; ++i) {
     unsigned pos2 = fe_(clave, i);
     if (table_[pos2].search(clave)) {
       return true;
@@ -84,7 +84,7 @@ bool HashTable<key, Container>::insert(const key& clave)const {
     table_[i].insert(clave);
     return true;
   }
-  for (int i = 0; i < tableSize_; ++i) {
+  for (int i = 1; i < tableSize_; ++i) {
     unsigned pos2 = fe_(clave, i);
     if (!table_[pos2].isFull()) {
       table_[i].insert(clave);
