@@ -18,7 +18,7 @@ template <class key>
 
 class Module_DispersionFunction : public DispersionFunction<key> {
   public:
-    unsigned operator()(const key& clave) const {return clave % this -> tableSize_;};
+    unsigned operator()(const key& clave) const {return unsigned(clave) % this -> tableSize_;};
     Module_DispersionFunction(unsigned tableSize): DispersionFunction<key>(tableSize) {};
 };
 
@@ -35,17 +35,18 @@ template <class key>
 class Random_DispersionFunction : public DispersionFunction<key> {
   public:
     Random_DispersionFunction(unsigned tableSize): DispersionFunction<key>(tableSize) {};  
-    unsigned operator()(const key& clave) const {return rand(srand(clave)) % this -> tableSize_;}; 
+    unsigned operator()(const key& clave) const {return rand() % this -> tableSize_;}; 
 };
 
 template <class key>
 unsigned Sum_DispersionFunction<key>::operator()(const key& clave)const {
   unsigned sum = 0;
-    while(clave > 0) {
-      sum += clave % 10;
-      clave /= 10;
+    unsigned clave_ = unsigned(clave);
+    while(clave_ > 0) {
+      sum += clave_ % 10;
+      clave_ /= 10;
     }
-  return clave % this -> tableSize_;
+  return clave_ % this -> tableSize_;
 }
 
 #endif

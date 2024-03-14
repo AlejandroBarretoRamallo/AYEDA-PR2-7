@@ -18,7 +18,7 @@ template <class key>
 
 class Lineal_ExplorationFunction : public ExplorationFunction<key> {
   public:
-    unsigned operator()(const key&, unsigned i) const {return i % this-> tableSize_;};
+    unsigned operator()(const key&, unsigned i) const {return 1 + (i % (this-> tableSize_ - 1));};
     Lineal_ExplorationFunction(unsigned tableSize): ExplorationFunction<key>(tableSize) {};
 };
 
@@ -26,7 +26,7 @@ template<class key>
 
 class Cuadratic_ExplorationFunction : public ExplorationFunction<key> {
   public:
-    unsigned operator()(const key&, unsigned i) const {return (i * i) % this -> tableSize_;};
+    unsigned operator()(const key&, unsigned i) const {return 1 + ((i * i) % (this -> tableSize_ - 1));};
     Cuadratic_ExplorationFunction(unsigned tableSize): ExplorationFunction<key>(tableSize) {};
 };
 
@@ -34,7 +34,7 @@ template <class key>
 
 class bidispersion_ExplorationFunction: public ExplorationFunction<key> {
   public:
-    unsigned operator()(const key& clave, unsigned i) const {return (dispersionFunction_(clave) * i) % this -> tableSize_;};
+    unsigned operator()(const key& clave, unsigned i) const {return 1 + ((dispersionFunction_(clave) * i) % (this -> tableSize_ - 1));};
     bidispersion_ExplorationFunction(unsigned tableSize, DispersionFunction<key> dispersionFunction): ExplorationFunction<key>(tableSize) { dispersionFunction_ = dispersionFunction;};
   private:
     DispersionFunction<key> dispersionFunction_;
