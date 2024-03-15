@@ -53,12 +53,13 @@ bool HashTable<key, container>::search(const key& clave) const {
   if (table_[pos]->search(clave)) {
     return true;
   }
+  unsigned pos_;
   for (int i = 0; i < tableSize_; ++i) {
-    pos = fe_(clave, i);
-    if (table_[pos]-> search(clave)) {
+    pos_ = (pos + fe_(clave, i)) % tableSize_;
+    if (table_[pos_]-> search(clave)) {
       return true;
     }
-    if (!table_[pos]-> isFull()) {
+    if (!table_[pos_]-> isFull()) {
       return false;
     }
   }
@@ -83,11 +84,18 @@ bool HashTable<key, container>::insert(const key& clave) {
       return true;
     }
     else {
+      unsigned pos_;
       for (int i = 0; i < tableSize_; ++i) {
-        pos = fe_(clave, i);
-        if (!table_[pos]-> isFull()) {
-          table_[pos]-> insert(clave);
-          return true;
+        pos_ = (pos + fe_(clave, i)) % tableSize_;
+        if (!table_[pos_]-> search(clave)) {
+          if (!table_[pos_]-> isFull()) {
+            table_[pos_]-> insert(clave);
+            return true;
+          }
+        }
+        else {
+          std::cout << "Ya existe: " << "\n";
+          return false;
         }
       }
     }
@@ -130,7 +138,7 @@ bool HashTable<key, dynamicSequence<key>>::insert(const key& clave) {
 template <class key>   // imprimir hastable con secuencia dinamica
 void HashTable<key, dynamicSequence<key>>::print() {
   for (int i = 0; i < tableSize_; i++) {
-    std::cout << "Posicion " << i << ":\n ";
+    std::cout << "Posicion " << i << ":\n";
     for (int j = 0; j < table_[i].getSecuencia().size(); j++) {
       std::cout << unsigned(table_[i][j]) << "\n";
     }
@@ -141,7 +149,7 @@ void HashTable<key, dynamicSequence<key>>::print() {
 template <class key, class container>   // imprimir hastable con secuencia estatica
 void HashTable<key, container>::print() {
   for (int i = 0; i < tableSize_; i++) {
-    std::cout << "Posicion " << i << ":\n ";
+    std::cout << "Posicion " << i << ":\n";
     for (int j = 0; j < blockSize_; j++) {
       if (((*table_[i])[j]) != nullptr) {
         std::cout << unsigned(*(*table_[i])[j]) << "\n";

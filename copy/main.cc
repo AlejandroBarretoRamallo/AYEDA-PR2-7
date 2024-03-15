@@ -57,14 +57,22 @@ void useTable(HashTable<key, container> hashtable) {
   while (opcion != 4) {
     switch (opcion) {
       case 1: {
-        std::cout << "Insertar: ";
+        bool valid = false;
         unsigned int clave;
-        std::cin >> clave;
+        while(!valid) {
+          std::cout << "Insertar: ";
+          std::cin >> clave;
+          if (clave >= 10000000 && clave <= 99999999) {
+            valid = true;
+          } else {
+            std::cout << "Clave invalida, se necesitan 8 digitos\n";
+          }
+        }
         Dni dni(clave);
         if (hashtable.insert(clave)) {
-          std::cout << "Insertado" << std::endl;
+          std::cout << "Insertado\n";
         } else {
-          std::cout << "No se pudo insertar" << std::endl;
+          std::cout << "No se pudo insertar\n";
         }
         break;
       }
@@ -84,6 +92,9 @@ void useTable(HashTable<key, container> hashtable) {
         hashtable.print();
         break;
       } 
+      case 4: {
+        break;
+      }
     }
     opcion = menu();
   }
@@ -91,7 +102,7 @@ void useTable(HashTable<key, container> hashtable) {
 
 int main(int argc, char* argv[]) {
   if ((argc < 9 || argc > 11) && argc != 2) {
-    std::cout << "Error en los argumentos" << std::endl;
+    std::cout << "Error en los argumentos\n";
     help();
     return 0;
   }
@@ -124,7 +135,7 @@ int main(int argc, char* argv[]) {
         break;
       }
       default: {
-        std::cout << "Error en el codigo de la funcion de dispersion" << std::endl;
+        std::cout << "Error en el codigo de la funcion de dispersion\n";
         help();
         return 0;
       }
@@ -134,6 +145,7 @@ int main(int argc, char* argv[]) {
     switch(fd) {
       case 1: {
         Module_DispersionFunction<Dni> fd(tableSize);
+        DispersionFunction<Dni>* dispersionFunction = new Module_DispersionFunction<Dni>(tableSize);
         switch (fe) {
           case 1: {
             Lineal_ExplorationFunction<Dni> fe(tableSize);
@@ -148,25 +160,99 @@ int main(int argc, char* argv[]) {
             break;
           }
           case 3: {
-            DispersionFunction<Dni>* dispersionFunction = new Module_DispersionFunction<Dni>(tableSize);
             bidispersion_ExplorationFunction<Dni> fe(tableSize, dispersionFunction);
             HashTable<Dni, staticSequence<Dni>> tablahash(tableSize, fd, fe, blockSize);
             useTable(tablahash);
             break;
           }
           case 4: {
-            DispersionFunction<Dni>* dispersionFunction = new Module_DispersionFunction<Dni>(tableSize);
             Redispersion_ExplorationFunction<Dni> fe(tableSize, dispersionFunction);
             HashTable<Dni, staticSequence<Dni>> tablahash(tableSize, fd, fe, blockSize);
             useTable(tablahash);
             break;
           }
           default: {
-            std::cout << "Error en el codigo de la funcion de exploracion" << std::endl;
+            std::cout << "Error en el codigo de la funcion de exploracion\n";
             help();
             return 0;
           }
         }
+        delete dispersionFunction;
+        break;
+      }
+      case 2: {
+        Sum_DispersionFunction<Dni> fd(tableSize);
+        DispersionFunction<Dni>* dispersionFunction = new Sum_DispersionFunction<Dni>(tableSize);
+        switch (fe) {
+          case 1: {
+            Lineal_ExplorationFunction<Dni> fe(tableSize);
+            HashTable<Dni, staticSequence<Dni>> tablahash(tableSize, fd, fe, blockSize);
+            useTable(tablahash);
+            break;
+          }
+          case 2: {
+            Cuadratic_ExplorationFunction<Dni> fe(tableSize);
+            HashTable<Dni, staticSequence<Dni>> tablahash(tableSize, fd, fe, blockSize);
+            useTable(tablahash);
+            break;
+          }
+          case 3: {
+            bidispersion_ExplorationFunction<Dni> fe(tableSize, dispersionFunction);
+            HashTable<Dni, staticSequence<Dni>> tablahash(tableSize, fd, fe, blockSize);
+            useTable(tablahash);
+            break;
+          }
+          case 4: {
+            Redispersion_ExplorationFunction<Dni> fe(tableSize, dispersionFunction);
+            HashTable<Dni, staticSequence<Dni>> tablahash(tableSize, fd, fe, blockSize);
+            useTable(tablahash);
+            break;
+          }
+          default: {
+            std::cout << "Error en el codigo de la funcion de exploracion\n";
+            help();
+            return 0;
+          }
+        }
+        delete dispersionFunction;
+        break;
+      }
+      case 3: {
+        Random_DispersionFunction<Dni> fd(tableSize);
+        DispersionFunction<Dni>* dispersionFunction = new Random_DispersionFunction<Dni>(tableSize);
+        switch (fe) {
+          case 1: {
+            Lineal_ExplorationFunction<Dni> fe(tableSize);
+            HashTable<Dni, staticSequence<Dni>> tablahash(tableSize, fd, fe, blockSize);
+            useTable(tablahash);
+            break;
+          }
+          case 2: {
+            Cuadratic_ExplorationFunction<Dni> fe(tableSize);
+            HashTable<Dni, staticSequence<Dni>> tablahash(tableSize, fd, fe, blockSize);
+            useTable(tablahash);
+            break;
+          }
+          case 3: {
+            bidispersion_ExplorationFunction<Dni> fe(tableSize, dispersionFunction);
+            HashTable<Dni, staticSequence<Dni>> tablahash(tableSize, fd, fe, blockSize);
+            useTable(tablahash);
+            break;
+          }
+          case 4: {
+            Redispersion_ExplorationFunction<Dni> fe(tableSize, dispersionFunction);
+            HashTable<Dni, staticSequence<Dni>> tablahash(tableSize, fd, fe, blockSize);
+            useTable(tablahash);
+            break;
+          }
+          default: {
+            std::cout << "Error en el codigo de la funcion de exploracion\n";
+            help();
+            return 0;
+          }
+        }
+        delete dispersionFunction;
+        break;
       }
     }
   }

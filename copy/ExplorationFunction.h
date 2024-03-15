@@ -20,7 +20,7 @@ template <class key>
 
 class Lineal_ExplorationFunction : public ExplorationFunction<key> {
   public:
-    unsigned operator()(const key&, unsigned i) const {return 1 + (i % (this-> tableSize_ - 1)); };
+    unsigned operator()(const key& clave, unsigned i) const {return 1 + i % (this->tableSize_ - 1);};
     Lineal_ExplorationFunction(unsigned tableSize): ExplorationFunction<key>(tableSize) {};
 };
 
@@ -28,8 +28,8 @@ template<class key>
 
 class Cuadratic_ExplorationFunction : public ExplorationFunction<key> {
   public:
-    unsigned operator()(const key&, unsigned i) const {return 1 + ((i * i) % (this -> tableSize_ - 1));}; 
-    Cuadratic_ExplorationFunction(unsigned tableSize): ExplorationFunction<key>(tableSize) {};
+    unsigned operator()(const key& clave, unsigned i) const { return (((i + 1) * (i + 1)) - 1) % (this->tableSize_ - 1) + 1;}; 
+    Cuadratic_ExplorationFunction(unsigned tableSize): ExplorationFunction<key>(tableSize){};
 };
 
 template <class key>
@@ -37,9 +37,9 @@ template <class key>
 class bidispersion_ExplorationFunction: public ExplorationFunction<key> {
   public:
     unsigned operator()(const key& clave, unsigned i) const {
-      return 1 + ((dispersionFunction_->operator()(clave) * i) % (this->tableSize_ - 1));
+      return ((dispersionFunction_->operator()(clave) * (i + 1)) % (this->tableSize_ - 1));
     }
-    bidispersion_ExplorationFunction(unsigned tableSize, DispersionFunction<key>* dispersionFunction): ExplorationFunction<key>(tableSize) { dispersionFunction_ = dispersionFunction;};
+    bidispersion_ExplorationFunction(unsigned tableSize, DispersionFunction<key>* dispersionFunction): ExplorationFunction<key>(tableSize), dispersionFunction_(dispersionFunction) {};
   private:
     DispersionFunction<key>* dispersionFunction_;
 };
@@ -52,7 +52,7 @@ class Redispersion_ExplorationFunction: public ExplorationFunction<key> {
       unsigned dispersionResult = dispersionFunction_->operator()(clave);
       return pow(dispersionResult, i);
     }
-    Redispersion_ExplorationFunction(unsigned tableSize,DispersionFunction<key>* dispersionFunction): ExplorationFunction<key>(tableSize) {dispersionFunction_ = dispersionFunction;};
+    Redispersion_ExplorationFunction(unsigned tableSize,DispersionFunction<key>* dispersionFunction): ExplorationFunction<key>(tableSize), dispersionFunction_(dispersionFunction) {};
   private:
     DispersionFunction<key>* dispersionFunction_;
 };
