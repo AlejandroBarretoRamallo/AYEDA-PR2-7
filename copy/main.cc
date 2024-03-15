@@ -52,7 +52,7 @@ int menu() {
 }
 
 template <class key, class container>
-void useTable(HashTable<key, container> hashtable) {
+void useTable(HashTable<key, container>& hashtable) {
   int opcion = menu();
   while (opcion != 4) {
     switch (opcion) {
@@ -101,7 +101,7 @@ void useTable(HashTable<key, container> hashtable) {
 }
 
 int main(int argc, char* argv[]) {
-  if ((argc < 9 || argc > 11) && argc != 2) {
+  if ((argc < 7 || argc > 11) && argc != 2) {
     std::cout << "Error en los argumentos\n";
     help();
     return 0;

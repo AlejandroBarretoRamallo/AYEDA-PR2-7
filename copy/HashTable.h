@@ -29,6 +29,7 @@ class HashTable <key, dynamicSequence<key>> {
     bool search(const key&)const;
     bool insert(const key&); 
     void print();
+    ~HashTable();
   private:
     std::vector<dynamicSequence<key>> table_;
     unsigned tableSize_;
@@ -41,10 +42,6 @@ HashTable<key,container>::HashTable(unsigned tableSize, DispersionFunction<key>&
     for (int i = 0; i < tableSize_; i++) {
       table_[i] = new container(blockSize_);
     }
-}
-
-template <class key, class container>   // destructor de hastable con secuencia estatica
-HashTable<key,container>::~HashTable() {
 }
 
 template <class key, class container>   // buscar en hastable con secuencia estatica
@@ -157,5 +154,20 @@ void HashTable<key, container>::print() {
     }
     std::cout << "\n";
   }
+}
+
+template <class key, class Container>
+HashTable<key, Container>::~HashTable() {
+  for (int i = 0; i < tableSize_; i++) {
+    if (table_[i] != nullptr) {
+      delete table_[i];
+    }
+  }
+  delete[] table_;
+}
+
+template <class key>
+HashTable<key, dynamicSequence<key>>::~HashTable() {
+  table_.clear();
 }
 #endif

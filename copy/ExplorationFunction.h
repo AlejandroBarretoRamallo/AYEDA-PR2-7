@@ -37,7 +37,7 @@ template <class key>
 class bidispersion_ExplorationFunction: public ExplorationFunction<key> {
   public:
     unsigned operator()(const key& clave, unsigned i) const {
-      return ((dispersionFunction_->operator()(clave) * (i + 1)) % (this->tableSize_ - 1));
+      return ((dispersionFunction_->operator()(clave) * (i + 1) - 1) % (this->tableSize_ - 1)) + 1;
     }
     bidispersion_ExplorationFunction(unsigned tableSize, DispersionFunction<key>* dispersionFunction): ExplorationFunction<key>(tableSize), dispersionFunction_(dispersionFunction) {};
   private:
@@ -50,7 +50,7 @@ class Redispersion_ExplorationFunction: public ExplorationFunction<key> {
   public:
     unsigned operator()(const key& clave, unsigned i) const {
       unsigned dispersionResult = dispersionFunction_->operator()(clave);
-      return pow(dispersionResult, i);
+      return ((unsigned(pow(dispersionResult, i + 1))) % this->tableSize_ - 1) + 1;
     }
     Redispersion_ExplorationFunction(unsigned tableSize,DispersionFunction<key>* dispersionFunction): ExplorationFunction<key>(tableSize), dispersionFunction_(dispersionFunction) {};
   private:

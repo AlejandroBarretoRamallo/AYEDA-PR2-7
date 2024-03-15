@@ -23,6 +23,7 @@ class dynamicSequence : public Sequence<key> {
     dynamicSequence(): Sequence<key>() {secuencia_ = std::vector<key>(0);};
     key operator[](int i) const {return secuencia_[i];};
     std::vector<key> getSecuencia() const {return secuencia_;};
+    ~dynamicSequence();
   private:
     std::vector<key> secuencia_;
 };
@@ -41,6 +42,7 @@ class staticSequence : public Sequence<key> {
       }
       size_ = blockSize;
     };
+    ~staticSequence();
   private:
     key** secuencia_;
     unsigned size_;
@@ -102,5 +104,20 @@ bool dynamicSequence<key>::insert(const key& clave) {
   }
   secuencia_.push_back(clave);
   return true;
+}
+
+template <class key>
+staticSequence<key>::~staticSequence() {
+  for (int i = 0; i < size_; i++) {
+    if (secuencia_[i] != nullptr) {
+      delete secuencia_[i];
+    }
+  }
+  delete[] secuencia_;
+}
+
+template <class key>
+dynamicSequence<key>::~dynamicSequence() {
+  secuencia_.clear();
 }
 #endif
