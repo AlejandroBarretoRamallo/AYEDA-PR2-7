@@ -78,8 +78,11 @@ bool HashTable<key, container>::insert(const key& clave) {
   }
   unsigned pos = fd_(clave);
   if (!table_[pos] -> isFull()) {
-    table_[pos] -> insert(clave);
-    return true;
+    if (!table_[pos] -> search(clave)) {
+      table_[pos] -> insert(clave);
+      return true;
+    }
+    return false;
   }
   for (int i = 0; i < tableSize_; ++i) {
     pos = fe_(clave, i);
