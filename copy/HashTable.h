@@ -77,19 +77,24 @@ bool HashTable<key, container>::insert(const key& clave) {
     return false;
   }
   unsigned pos = fd_(clave);
-  if (!table_[pos] -> isFull()) {
-    if (!table_[pos] -> search(clave)) {
+  if (!table_[pos] -> search(clave)) {
+    if (!table_[pos] -> isFull()) {
       table_[pos] -> insert(clave);
       return true;
     }
-    return false;
-  }
-  for (int i = 0; i < tableSize_; ++i) {
-    pos = fe_(clave, i);
-    if (!table_[pos]-> isFull()) {
-      table_[pos]-> insert(clave);
-      return true;
+    else {
+      for (int i = 0; i < tableSize_; ++i) {
+        pos = fe_(clave, i);
+        if (!table_[pos]-> isFull()) {
+          table_[pos]-> insert(clave);
+          return true;
+        }
+      }
     }
+  }
+  else {
+    std::cout << "Ya existe: " << "\n";
+    return false;
   }
   return false;
 }

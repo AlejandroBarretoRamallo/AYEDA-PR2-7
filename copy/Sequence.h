@@ -49,6 +49,9 @@ class staticSequence : public Sequence<key> {
 template <class key>
 bool staticSequence<key>::search(const key& clave) const {
   for (int i = 0; i < size_; i++) {
+    if (secuencia_[i] == nullptr) {
+      continue;
+    }
     if (*secuencia_[i] == clave) {
       return true;
     }
