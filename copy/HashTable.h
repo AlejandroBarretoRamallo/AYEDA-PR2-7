@@ -11,8 +11,8 @@ class HashTable {
   public:
     HashTable(unsigned,DispersionFunction<key>&, ExplorationFunction<key>&,unsigned);
     ~HashTable();
-    bool search(const key&)const;  //hacer
-    bool insert(const key&); // hacer
+    bool search(const key&)const; 
+    bool insert(const key&); 
     void print();
   private:
     unsigned tableSize_;
@@ -46,17 +46,17 @@ HashTable<key,container>::HashTable(unsigned tableSize, DispersionFunction<key>&
 
 template <class key, class container>   // buscar en hastable con secuencia estatica
 bool HashTable<key, container>::search(const key& clave) const {
-  unsigned pos = fd_(clave);
-  if (table_[pos]->search(clave)) {
+  unsigned pos = fd_(clave); // poscion al calcular con la funcion de dispersion
+  if (table_[pos]->search(clave)) { 
     return true;
   }
   unsigned pos_;
-  for (int i = 0; i < tableSize_; ++i) {
-    pos_ = (pos + fe_(clave, i)) % tableSize_;
+  for (int i = 0; i < tableSize_; ++i) { // ir caculando fe segun el intento
+    pos_ = (pos + fe_(clave, i)) % tableSize_;  // actualizamos posicion
     if (table_[pos_]-> search(clave)) {
       return true;
     }
-    if (!table_[pos_]-> isFull()) {
+    if (!table_[pos_]-> isFull()) {   // si llega a alguna posicion que no esta llena y no se ha encontrado, no esta
       return false;
     }
   }
@@ -66,18 +66,18 @@ bool HashTable<key, container>::search(const key& clave) const {
 template <class key, class container>   // insertar en hastable con secuencia estatica
 bool HashTable<key, container>::insert(const key& clave) {
   bool full = true;
-  for (int i = 0; i < tableSize_; ++i) {
+  for (int i = 0; i < tableSize_; ++i) {    
     if (!table_[i]-> isFull()) {
       full = false;
     }
   }
-  if (full) {
+  if (full) {           // si toda la tabla esta llena no se podra insertar
     return false;
   }
-  unsigned pos = fd_(clave);
+  unsigned pos = fd_(clave);  // calculamos la posicion con la funcion de dispersion
   if (!table_[pos] -> search(clave)) {
     if (!table_[pos] -> isFull()) {
-      table_[pos] -> insert(clave);
+      table_[pos] -> insert(clave);   // si no esta llena y no se encuentra el valor, se inserta
       return true;
     }
     else {
@@ -86,19 +86,19 @@ bool HashTable<key, container>::insert(const key& clave) {
         pos_ = (pos + fe_(clave, i)) % tableSize_;
         if (!table_[pos_]-> search(clave)) {
           if (!table_[pos_]-> isFull()) {
-            table_[pos_]-> insert(clave);
+            table_[pos_]-> insert(clave);   // si no esta llena y no se encuentra el valor, se inserta
             return true;
           }
         }
         else {
-          std::cout << "Ya existe: " << "\n";
+          std::cout << "Ya existe: " << "\n"; // si se encuentra el valor, no se inserta
           return false;
         }
       }
     }
   }
   else {
-    std::cout << "Ya existe: " << "\n";
+    std::cout << "Ya existe: " << "\n"; // si se encuentra el valor, no se inserta
     return false;
   }
   return false;
@@ -112,7 +112,7 @@ HashTable<key, dynamicSequence<key>>::HashTable(unsigned tableSize, DispersionFu
 
 template <class key>   // buscar en hastable con secuencia dinamica
 bool HashTable<key, dynamicSequence<key>>::search(const key& clave) const {
-  unsigned pos = fd_(clave);
+  unsigned pos = fd_(clave);  // calculamos la posicion con la funcion de dispersion
   if (table_[pos].search(clave)) {
     return true;
   }
@@ -121,12 +121,12 @@ bool HashTable<key, dynamicSequence<key>>::search(const key& clave) const {
 
 template <class key>   // insertar en hastable con secuencia dinamica
 bool HashTable<key, dynamicSequence<key>>::insert(const key& clave) {
-  unsigned pos = fd_(clave);
-  if (table_[pos].search(clave)) {
-    std::cout << "Ya existe: " << std::endl;
+  unsigned pos = fd_(clave); // calculamos la posicion con la funcion de dispersion
+  if (table_[pos].search(clave)) { 
+    std::cout << "Ya existe: " << std::endl; // si se encuentra el valor, no se inserta
     return false;
   }
-  if (table_[pos].insert(clave)) {
+  if (table_[pos].insert(clave)) { // si no se encuentra el valor, se inserta
     return true;
   }
   return false;
@@ -134,10 +134,10 @@ bool HashTable<key, dynamicSequence<key>>::insert(const key& clave) {
 
 template <class key>   // imprimir hastable con secuencia dinamica
 void HashTable<key, dynamicSequence<key>>::print() {
-  for (int i = 0; i < tableSize_; i++) {
-    std::cout << "Posicion " << i << ":\n";
-    for (int j = 0; j < table_[i].getSecuencia().size(); j++) {
-      std::cout << unsigned(table_[i][j]) << "\n";
+  for (int i = 0; i < tableSize_; i++) {    // recorremos todas las secuencias
+    std::cout << "Posicion " << i << ":\n";  
+    for (int j = 0; j < table_[i].getSecuencia().size(); j++) {   // recorremos todas las posiciones de una secuencia
+      std::cout << unsigned(table_[i][j]) << "\n";      
     }
     std::cout << "\n";
   }
@@ -145,9 +145,9 @@ void HashTable<key, dynamicSequence<key>>::print() {
 
 template <class key, class container>   // imprimir hastable con secuencia estatica
 void HashTable<key, container>::print() {
-  for (int i = 0; i < tableSize_; i++) {
+  for (int i = 0; i < tableSize_; i++) {  // recorremos todas las secuencias
     std::cout << "Posicion " << i << ":\n";
-    for (int j = 0; j < blockSize_; j++) {
+    for (int j = 0; j < blockSize_; j++) {  // recorremos todas las posiciones de una secuencia
       if (((*table_[i])[j]) != nullptr) {
         std::cout << unsigned(*(*table_[i])[j]) << "\n";
       }
@@ -158,7 +158,7 @@ void HashTable<key, container>::print() {
 
 template <class key, class Container>
 HashTable<key, Container>::~HashTable() {
-  for (int i = 0; i < tableSize_; i++) {
+  for (int i = 0; i < tableSize_; i++) { // liberamos memoria
     if (table_[i] != nullptr) {
       delete table_[i];
     }

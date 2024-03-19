@@ -50,11 +50,11 @@ class staticSequence : public Sequence<key> {
 
 template <class key>
 bool staticSequence<key>::search(const key& clave) const {
-  for (int i = 0; i < size_; i++) {
+  for (int i = 0; i < size_; i++) {  // recorremos la secuencia
     if (secuencia_[i] == nullptr) {
       continue;
     }
-    if (*secuencia_[i] == clave) {
+    if (*secuencia_[i] == clave) { // si encontramos la clave
       return true;
     }
   }
@@ -63,11 +63,11 @@ bool staticSequence<key>::search(const key& clave) const {
 
 template <class key>
 bool staticSequence<key>::insert(const key& clave) {
-  if (isFull()) {
+  if (isFull()) {  // si esta llena no se puede insertar
     return false;
   }
   for (int i = 0; i < size_; i++) {
-    if (secuencia_[i] == nullptr) {
+    if (secuencia_[i] == nullptr) { // si encontramos un espacio vacio, insertamos
       secuencia_[i] = new key(clave);
       return true;
     }
@@ -78,7 +78,7 @@ bool staticSequence<key>::insert(const key& clave) {
 template <class key>
 bool staticSequence<key>::isFull() const {
   for (int i = 0; i < size_; ++i) {
-    if (secuencia_[i] == nullptr) {
+    if (secuencia_[i] == nullptr) { // si encontramos un espacio vacio, no esta llena
       return false;
     }
   }
@@ -87,8 +87,8 @@ bool staticSequence<key>::isFull() const {
 
 template <class key>
 bool dynamicSequence<key>::search(const key& clave) const {
-  for (int i = 0; i < secuencia_.size(); i++) {
-    if (secuencia_[i] == clave) {
+  for (int i = 0; i < secuencia_.size(); i++) { // recorremos la secuencia
+    if (secuencia_[i] == clave) { 
       return true;
     }
   }
@@ -97,23 +97,23 @@ bool dynamicSequence<key>::search(const key& clave) const {
 
 template <class key>
 bool dynamicSequence<key>::insert(const key& clave) {
-  for (int i = 0; i < secuencia_.size(); i++) {
+  for (int i = 0; i < secuencia_.size(); i++) { // recorremos la secuencia
     if (secuencia_[i] == clave) {
       return false;
     }
   }
-  secuencia_.push_back(clave);
+  secuencia_.push_back(clave); // si no se encuentra la clave, se inserta
   return true;
 }
 
 template <class key>
 staticSequence<key>::~staticSequence() {
-  for (int i = 0; i < size_; i++) {
+  for (int i = 0; i < size_; i++) { // eliminamos los elementos de la secuencia
     if (secuencia_[i] != nullptr) {
       delete secuencia_[i];
     }
   }
-  delete[] secuencia_;
+  delete[] secuencia_; // eliminamos la secuencia
 }
 
 template <class key>
