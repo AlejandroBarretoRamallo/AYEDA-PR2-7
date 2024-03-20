@@ -1,4 +1,6 @@
 #include <iostream>
+#include <cstdlib>
+#include<ctime>
 
 #include "HashTable.h"
 #include "ExplorationFunction.h"
@@ -23,22 +25,67 @@ void help() {
   std::cout << "3. Pseudoaleatoria\n";
 }
 
+int menu() {
+  std::cout << "1. Insertar clave\n";
+  std::cout << "2. Buscar clave\n";
+  std::cout << "3. Mostrar tabla\n";
+  std::cout << "4. Salir\n";
+  int option;
+  std::cin >> option;
+  return option;
+}
+
+template <class key, class container>
+void useHashTable(HashTable<key, container>& hashtable) {
+  int option = menu();
+  switch (option){
+    case 1: {
+      std::cout << "Introduce el DNI a insertar\n";
+      unsigned dni;
+      std::cin >> dni;
+      Dni clave(dni);
+      if (!hashtable.search(clave)) {
+        hashtable.insert(clave);
+      }
+      else {
+        std::cout << "La clave ya existe\n";
+      }
+    }
+    case 2: {
+      std::cout << "Introduce el DNI a buscar\n";
+      unsigned dni;
+      std::cin >> dni;
+      Dni clave(dni);
+      if (hashtable.search(clave)) {
+        std::cout << "La clave existe\n";
+      }
+      else {
+        std::cout << "La clave no existe\n";
+      }
+    }
+
+  }
+}
+
 void createHashTable(unsigned tableSize, unsigned fdCode, unsigned feCode, unsigned blockSize, bool isOpen) {
   if (isOpen) {
     switch(fdCode) {
       case 1: {
         Module_DispersionFunction<Dni> fd(tableSize);
         HashTable<Dni, dynamicSequence<Dni>> tablahash(tableSize, fd);
+        useHashTable(tablahash);
         break;
       }
       case 2: {
         Sum_DispersionFunction<Dni> fd(tableSize);
         HashTable<Dni, dynamicSequence<Dni>> tablahash(tableSize, fd);
+        useHashTable(tablahash);
         break;
       }
       case 3: {
         Random_DispersionFunction<Dni> fd(tableSize);
         HashTable<Dni, dynamicSequence<Dni>> tablahash(tableSize, fd);
+        useHashTable(tablahash);
         break;
       }
       default: {
@@ -50,15 +97,98 @@ void createHashTable(unsigned tableSize, unsigned fdCode, unsigned feCode, unsig
   }
   else {
     switch(fdCode) {
-      case 1:
+      case 1: {
+        Module_DispersionFunction<Dni> fd(tableSize);
         switch(feCode) {
           case 1: {
-            Module_DispersionFunction<Dni> fd(tableSize);
             Lineal_ExplorationFunction<Dni> fe(tableSize);
             HashTable<Dni, staticSequence<Dni>> tablahash(tableSize, fd, fe, blockSize);
+            useHashTable(tablahash);
             break;
           }
+          case 2: {
+            Cuadratic_ExplorationFunction<Dni> fe(tableSize);
+            HashTable<Dni, staticSequence<Dni>> tablahash(tableSize, fd, fe, blockSize);
+            useHashTable(tablahash);
+            break;
+          }
+          case 3: {
+            bidispersion_ExplorationFunction<Dni> fe(tableSize, fd);
+            HashTable<Dni, staticSequence<Dni>> tablahash(tableSize, fd, fe, blockSize);
+            useHashTable(tablahash);
+            break;
+          }
+          case 4: {
+            Redispersion_ExplorationFunction<Dni> fe(tableSize, fd);
+            HashTable<Dni, staticSequence<Dni>> tablahash(tableSize, fd, fe, blockSize);
+            useHashTable(tablahash);
+            break;
+          } 
         }
+      }
+      case 2: {
+        Sum_DispersionFunction<Dni> fd(tableSize);
+        switch(feCode) {
+          case 1: {
+            Lineal_ExplorationFunction<Dni> fe(tableSize);
+            HashTable<Dni, staticSequence<Dni>> tablahash(tableSize, fd, fe, blockSize);
+            useHashTable(tablahash);
+            break;
+          }
+          case 2: {
+            Cuadratic_ExplorationFunction<Dni> fe(tableSize);
+            HashTable<Dni, staticSequence<Dni>> tablahash(tableSize, fd, fe, blockSize);
+            useHashTable(tablahash);
+            break;
+          }
+          case 3: {
+            bidispersion_ExplorationFunction<Dni> fe(tableSize, fd);
+            HashTable<Dni, staticSequence<Dni>> tablahash(tableSize, fd, fe, blockSize);
+            useHashTable(tablahash);
+            break;
+          }
+          case 4: {
+            Redispersion_ExplorationFunction<Dni> fe(tableSize, fd);
+            HashTable<Dni, staticSequence<Dni>> tablahash(tableSize, fd, fe, blockSize);
+            useHashTable(tablahash);
+            break;
+          } 
+        }
+      }
+      case 3: {
+        Random_DispersionFunction<Dni> fd(tableSize);
+        switch(feCode) {
+          case 1: {
+            Lineal_ExplorationFunction<Dni> fe(tableSize);
+            HashTable<Dni, staticSequence<Dni>> tablahash(tableSize, fd, fe, blockSize);
+            useHashTable(tablahash);
+            break;
+          }
+          case 2: {
+            Cuadratic_ExplorationFunction<Dni> fe(tableSize);
+            HashTable<Dni, staticSequence<Dni>> tablahash(tableSize, fd, fe, blockSize);
+            useHashTable(tablahash);
+            break;
+          }
+          case 3: {
+            bidispersion_ExplorationFunction<Dni> fe(tableSize, fd);
+            HashTable<Dni, staticSequence<Dni>> tablahash(tableSize, fd, fe, blockSize);
+            useHashTable(tablahash);
+            break;
+          }
+          case 4: {
+            Redispersion_ExplorationFunction<Dni> fe(tableSize, fd);
+            HashTable<Dni, staticSequence<Dni>> tablahash(tableSize, fd, fe, blockSize);
+            useHashTable(tablahash);
+            break;
+          } 
+        }
+      }
+      default: {
+        std::cout << "Error en el codigo de la funcion de dispersion\n";
+        help();
+        break;
+      }
     }
   }
 }
@@ -69,6 +199,7 @@ int main(int argc, char* argv[]) {
     help();
     return 0;
   }
+  srand(time(NULL));
   unsigned tableSize, blockSize = 0, fdCode, feCode;
   bool isOpen;
   for (int i = 1; i < argc; ++i) {
