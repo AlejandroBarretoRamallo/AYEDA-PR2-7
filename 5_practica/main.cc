@@ -69,7 +69,7 @@ int main(int argc, char* argv[]) {
       sequence[i] = Dni(dni);
     }
   }
-  else if (init == "aleatorio") {
+  else if (init == "random") {
     for (unsigned i = 0; i < size; ++i) {
       sequence[i] = Dni();
     }
@@ -126,6 +126,17 @@ int main(int argc, char* argv[]) {
       else {
         shellSort.sort();
         std::cout << shellSort;
+      }
+      break;
+    }
+    case 5: {
+      RadixSort<Dni> radixSort(seq);
+      if (trace) {
+
+      }
+      else {
+        radixSort.sort();
+        std::cout << radixSort;
       }
       break;
     }

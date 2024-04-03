@@ -8,7 +8,9 @@ class Dni {
   public:
     unsigned getDni() const {return dni_;};
     Dni() {
-      dni_ = rand() % 99999999 + 10000000;
+    int min = 10000000;
+    int max = 99999999;
+    dni_ = rand() % (max - min + 1) + min;
     }
     Dni(unsigned dni) {
       dni_ = dni;
