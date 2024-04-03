@@ -138,7 +138,15 @@ void HeapSort<key>::sort()  {
 
 template <class key>
 void ShellSort<key>::deltaSort(int delta, int n) {
-
+  for (int i = delta; i < n; i++) {
+    unsigned x = this->sequence_[i];
+    unsigned j = i ;
+    while ((j >= delta) && (x < this ->sequence_[j - delta])) {
+      this->sequence_[j] = this ->sequence_[j - delta];
+      j = j - delta;
+    }
+    this->sequence_[j] = x;
+  }
 }
 
 template<class key> 
