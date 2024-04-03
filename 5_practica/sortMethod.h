@@ -9,6 +9,10 @@ class SortMethod {
   public:
     virtual void sort()  = 0;
     SortMethod( staticSequence<key>& sequence) : sequence_(sequence) {};
+    friend std::ostream& operator<<(std::ostream& os, const SortMethod<key>& sortMethod) {
+      os << sortMethod.sequence_;
+      return os;
+    };
   protected:
      staticSequence<key>& sequence_;
 };
@@ -78,12 +82,12 @@ void QuickSort<key>::qSort(unsigned ini, unsigned fin) {
    unsigned i = ini, f = fin ;
    unsigned p = this -> sequence_[(i+f)/2] ;
    while (i <= f) {
-    while (this -> sequence_[i] < p) {
+    while (unsigned(this -> sequence_[i]) < p) {
       i++;
-      while (this -> sequence_[f] > p) {
+      while (unsigned(this -> sequence_[f]) > p) {
         f--;
         if (i <= f) {
-          swap(this -> sequence_[i],this -> sequence_[f]);
+          std::swap(this -> sequence_[i],this -> sequence_[f]);
           i++; 
           f--;
         }
@@ -118,7 +122,7 @@ void HeapSort<key>::baja(int i, int n)  {
       break; 
     }
     else {
-      swap(this -> sequence_[i], this -> sequence_[h]);
+      std::swap(this -> sequence_[i], this -> sequence_[h]);
       i = h;
     }
   }
@@ -131,7 +135,7 @@ void HeapSort<key>::sort()  {
     baja(i, n);
   }
   for (int i = n; i > 1; i--) {
-    swap(this -> sequence_[1], this -> sequence_[i]);
+    std::swap(this -> sequence_[1], this -> sequence_[i]);
     baja(1, i - 1);
   }
 }

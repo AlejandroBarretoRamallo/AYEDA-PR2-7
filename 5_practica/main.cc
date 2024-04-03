@@ -1,6 +1,8 @@
 #include <iostream>
+#include <fstream>
 
 #include "sequence.h"
+#include "Dni.h"
 #include "sortMethod.h"
 
 void help() {
@@ -12,9 +14,9 @@ void help() {
   std::cout << "-trace <y|n>, indica si se muestra o no la traza durante la ejecución.\n";
   std::cout << "CODIGO DE ORDENACIÓN\n";
   std::cout << "1: Selección\n";
-  std::cout << "2: Burbuja\n";
+  std::cout << "2: QuickSort\n";
   std::cout << "3: HeapSort\n";
-  std::cout << "4: QuickSort\n";
+  std::cout << "4: ShellSort\n";
   std::cout << "5: RadixSort\n";
   return;
 }
@@ -54,4 +56,78 @@ int main(int argc, char* argv[]) {
   unsigned size = 0, orderType = 0;
   std::string fichero = "", init = "";
   bool trace = false;
+  readArgs(size, orderType, fichero, init, trace, argc, argv);
+  Dni* sequence = new Dni[size];
+  if (init == "manual") {
+    for (unsigned i = 0; i < size; ++i) {
+      unsigned dni;
+      std::cin >> dni;
+      while (dni < 10000000 || dni > 99999999) {
+        std::cout << "Introduce un DNI válido\n";
+        std::cin >> dni;
+      }
+      sequence[i] = Dni(dni);
+    }
+  }
+  else if (init == "aleatorio") {
+    for (unsigned i = 0; i < size; ++i) {
+      sequence[i] = Dni();
+    }
+  }
+  else if (init == "fichero") {
+    std::ifstream input(fichero);
+    for (unsigned i = 0; i < size; ++i) {
+      unsigned dni;
+      while (input >> dni) {
+        sequence[i] = Dni(dni);
+      }
+    }
+  }
+  staticSequence<Dni> seq(size, sequence);
+  switch(orderType) {
+    case 1: {
+      Seleccion seleccion(seq);
+      if (trace) {
+
+      }
+      else {
+        seleccion.sort();
+        std::cout << seleccion;
+      }
+      break;
+    }
+    case 2: {
+      QuickSort<Dni> quickSort(seq);
+      if (trace) {
+
+      }
+      else {
+        quickSort.sort();
+        std::cout << quickSort;
+      }
+      break;
+    }
+    case 3: {
+      HeapSort<Dni> heapSort(seq);
+      if (trace) {
+
+      }
+      else {
+        heapSort.sort();
+        std::cout << heapSort;
+      }
+      break;
+    }
+    case 4: {
+      ShellSort<Dni> shellSort(seq);
+      if (trace) {
+
+      }
+      else {
+        shellSort.sort();
+        std::cout << shellSort;
+      }
+      break;
+    }
+  }
 }
