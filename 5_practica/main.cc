@@ -38,7 +38,7 @@ void readArgs(unsigned& size, unsigned& orderType, std::string& fichero, std::st
       }
     }
     else if (arg == "-trace") {
-      if (argv[i + 1] == "y") {
+      if (std::string(argv[i + 1]) == "y") {
         trace = true;
       }
       else {
@@ -88,7 +88,7 @@ int main(int argc, char* argv[]) {
     case 1: {
       Seleccion seleccion(seq);
       if (trace) {
-
+        seleccion.trace_sort();
       }
       else {
         seleccion.sort();
@@ -99,7 +99,7 @@ int main(int argc, char* argv[]) {
     case 2: {
       QuickSort<Dni> quickSort(seq);
       if (trace) {
-
+        quickSort.trace_sort();
       }
       else {
         quickSort.sort();
@@ -110,7 +110,7 @@ int main(int argc, char* argv[]) {
     case 3: {
       HeapSort<Dni> heapSort(seq);
       if (trace) {
-
+        heapSort.trace_sort();
       }
       else {
         heapSort.sort();
@@ -121,7 +121,7 @@ int main(int argc, char* argv[]) {
     case 4: {
       ShellSort<Dni> shellSort(seq);
       if (trace) {
-
+        shellSort.trace_sort();
       }
       else {
         shellSort.sort();
@@ -132,7 +132,7 @@ int main(int argc, char* argv[]) {
     case 5: {
       RadixSort<Dni> radixSort(seq);
       if (trace) {
-
+        radixSort.trace_sort();
       }
       else {
         radixSort.sort();
