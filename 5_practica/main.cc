@@ -56,9 +56,9 @@ int main(int argc, char* argv[]) {
   unsigned size = 0, orderType = 0;
   std::string fichero = "", init = "";
   bool trace = false;
-  readArgs(size, orderType, fichero, init, trace, argc, argv);
-  Dni* sequence = new Dni[size];
-  if (init == "manual") {
+  readArgs(size, orderType, fichero, init, trace, argc, argv);  //leemos todos los argumentos
+  Dni* sequence = new Dni[size];    //creamos la secuencia de dni
+  if (init == "manual") {  //dejamos que el usuario introduzca los dni
     for (unsigned i = 0; i < size; ++i) {
       unsigned dni;
       std::cin >> dni;
@@ -69,12 +69,12 @@ int main(int argc, char* argv[]) {
       sequence[i] = Dni(dni);
     }
   }
-  else if (init == "random") {
+  else if (init == "random") {  //generamos los dni aleatoriamente
     for (unsigned i = 0; i < size; ++i) {
       sequence[i] = Dni();
     }
   }
-  else if (init == "fichero") {
+  else if (init == "fichero") {  //leemos los dni de un fichero
     std::ifstream input(fichero);
     for (unsigned i = 0; i < size; ++i) {
       unsigned dni;
@@ -83,9 +83,9 @@ int main(int argc, char* argv[]) {
       }
     }
   }
-  staticSequence<Dni> seq(size, sequence);
-  switch(orderType) {
-    case 1: {
+  staticSequence<Dni> seq(size, sequence);  //creamos la secuencia
+  switch(orderType) {  //elegimos el método de ordenación,y tenemos en cuenta si debemos mostrar la traza
+    case 1: {   // metodo de seleccion
       Seleccion seleccion(seq);
       if (trace) {
         seleccion.trace_sort();
@@ -96,7 +96,7 @@ int main(int argc, char* argv[]) {
       }
       break;
     }
-    case 2: {
+    case 2: {       // metodo quicksort
       QuickSort<Dni> quickSort(seq);
       if (trace) {
         quickSort.trace_sort();
@@ -107,7 +107,7 @@ int main(int argc, char* argv[]) {
       }
       break;
     }
-    case 3: {
+    case 3: {    // metodo heapsort
       HeapSort<Dni> heapSort(seq);
       if (trace) {
         heapSort.trace_sort();
@@ -118,7 +118,7 @@ int main(int argc, char* argv[]) {
       }
       break;
     }
-    case 4: {
+    case 4: {    // metodo shellsort
       ShellSort<Dni> shellSort(seq);
       if (trace) {
         shellSort.trace_sort();
@@ -129,7 +129,7 @@ int main(int argc, char* argv[]) {
       }
       break;
     }
-    case 5: {
+    case 5: {   // metodo radixsort
       RadixSort<Dni> radixSort(seq);
       if (trace) {
         radixSort.trace_sort();
