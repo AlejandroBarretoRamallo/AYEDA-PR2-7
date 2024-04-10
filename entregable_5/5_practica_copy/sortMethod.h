@@ -3,11 +3,12 @@
 
 #include "sequence.h"
 #include <algorithm>
+#include <vector>
 
 template<class key>
 class SortMethod {
   public:
-    virtual void sort()  = 0;
+    virtual void sort(int& asignations)  = 0;
     SortMethod( staticSequence<key>& sequence) : sequence_(sequence) {};
     friend std::ostream& operator<<(std::ostream& os, const SortMethod<key>& sortMethod) {
       os << sortMethod.sequence_;
@@ -20,7 +21,7 @@ class SortMethod {
 template<class key>
 class Seleccion : public SortMethod<key> {
   public:
-    void sort();
+    void sort(int& asignations);
     void trace_sort();
     Seleccion( staticSequence<key>& sequence): SortMethod<key>(sequence) {};
 };
@@ -28,9 +29,9 @@ class Seleccion : public SortMethod<key> {
 template <class key>
 class QuickSort : public SortMethod<key> {
   public:
-    void sort();
+    void sort(int& asignations);
     void trace_sort();
-    void qSort(unsigned ini, unsigned fin);
+    void qSort(unsigned ini, unsigned fin, int& asignations);
     void trace_qSort(unsigned ini, unsigned fin);
     QuickSort( staticSequence<key>& sequence) : SortMethod<key>(sequence) {};
 };
@@ -38,19 +39,19 @@ class QuickSort : public SortMethod<key> {
 template <class key>
 class HeapSort: public SortMethod<key> {
   public:
-    void sort();
+    void sort(int& asignations);
     void trace_sort();
     HeapSort( staticSequence<key>& sequence) : SortMethod<key>(sequence) {};
-    void baja(int, int);
+    void baja(int, int, int&);
     void trace_baja(int, int);
 };
 
 template <class key>
 class ShellSort: public SortMethod<key> {
   public:
-    void sort();
+    void sort(int&);
     void trace_sort();
-    void deltaSort(int, int);
+    void deltaSort(int, int, int&);
     void trace_deltaSort(int, int);
     ShellSort( staticSequence<key>& sequence): SortMethod<key>(sequence) {};
 };
@@ -58,13 +59,13 @@ class ShellSort: public SortMethod<key> {
 template <class key>
 class RadixSort: public SortMethod<key> {
   public:
-    void sort();
+    void sort(int&);
     void trace_sort();
     RadixSort( staticSequence<key>& sequence): SortMethod<key>(sequence) {};
 };
 
 template<class key> 
-void Seleccion<key>::sort() {
+void Seleccion<key>::sort(int& asignations) {
   unsigned n = this -> sequence_.getSize();
   for (int i = 0; i < n - 1; i++) {
     int min = i ;
@@ -74,6 +75,7 @@ void Seleccion<key>::sort() {
       }
     }
     if (min != i) {
+      asignations += 3;
       std::swap(this -> sequence_[i], this -> sequence_[min]);
     }
   }
@@ -98,9 +100,9 @@ void Seleccion<key>::trace_sort() {
 }
 
 template<class key> 
-void QuickSort<key>::sort()  {
+void QuickSort<key>::sort(int& asignations)  {
   unsigned ini = 0, fin = this ->sequence_.getSize();
-  qSort(ini, fin - 1);
+  qSort(ini, fin - 1, asignations);
 }
 
 template<class key>
@@ -112,7 +114,7 @@ void QuickSort<key>::trace_sort() {
 }
 
 template <class key>
-void QuickSort<key>::qSort(unsigned ini, unsigned fin) {
+void QuickSort<key>::qSort(unsigned ini, unsigned fin, int& asignations) {
   unsigned i = ini, f = fin ;
   unsigned p = this -> sequence_[(i+f)/2] ;
   while (i <= f) {
@@ -124,15 +126,16 @@ void QuickSort<key>::qSort(unsigned ini, unsigned fin) {
     }
     if (i <= f) {
       std::swap(this -> sequence_[i],this -> sequence_[f]);
+      asignations += 3;
       i++; 
       f--;
     }
   }
   if (ini < f) {
-    qSort(ini, f); 
+    qSort(ini, f, asignations); 
   } 
   if (i < fin) {
-    qSort(i, fin); 
+    qSort(i, fin, asignations); 
   } 
 }
 
@@ -164,7 +167,7 @@ void QuickSort<key>::trace_qSort(unsigned ini, unsigned fin) {
 
 
 template <class key>
-void HeapSort<key>::baja(int i, int n) {
+void HeapSort<key>::baja(int i, int n, int& asignations) {
   while (2 * i + 1 < n) { 
     int h = 2 * i + 1; 
     int h2 = 2 * i + 2; 
@@ -175,6 +178,7 @@ void HeapSort<key>::baja(int i, int n) {
       break; 
     }
     std::swap(this->sequence_[i], this->sequence_[h]); 
+    asignations += 3;
     i = h; 
   }
 }
@@ -197,14 +201,15 @@ void HeapSort<key>::trace_baja(int i, int n) {
 }
 
 template <class key>
-void HeapSort<key>::sort() {
+void HeapSort<key>::sort(int& asignations) {
   unsigned n = this->sequence_.getSize();
   for (int i = n / 2 - 1; i >= 0; i--) {
-    baja(i, n);
+    baja(i, n, asignations);
   }
   for (int i = n - 1; i > 0; i--) {
     std::swap(this->sequence_[0], this->sequence_[i]);
-    baja(0, i);
+    asignations += 3;
+    baja(0, i, asignations);
   }
 }
 
@@ -224,15 +229,17 @@ void HeapSort<key>::trace_sort() {
 }
 
 template <class key>
-void ShellSort<key>::deltaSort(int delta, int n) {
+void ShellSort<key>::deltaSort(int delta, int n, int& asignations) {
   for (int i = delta; i < n; i++) {
     unsigned x = this->sequence_[i];
     unsigned j = i ;
     while ((j >= delta) && (x < this ->sequence_[j - delta])) {
       this->sequence_[j] = this ->sequence_[j - delta];
+      asignations += 1;
       j = j - delta;
     }
     this->sequence_[j] = x;
+    asignations += 1;
   }
 }
 
@@ -251,12 +258,12 @@ void ShellSort<key>::trace_deltaSort(int delta, int n) {
 }
 
 template<class key> 
-void ShellSort<key>::sort()  {
+void ShellSort<key>::sort(int& asignations)  {
   int delta = this -> sequence_.getSize();
   unsigned size = delta;
   while (delta > 1) {
    delta = delta / 2 ;
-   deltaSort(delta, size);
+   deltaSort(delta, size, asignations);
   }
 }
 
@@ -273,7 +280,7 @@ void ShellSort<key>::trace_sort() {
 }
 
 template<class key> 
-void RadixSort<key>::sort()  {
+void RadixSort<key>::sort(int& asignations)  {
   std::vector<std::vector<key>> buckets(10);
   unsigned numOfDigits = 0;
   int num = this -> sequence_[0];
@@ -296,6 +303,7 @@ void RadixSort<key>::sort()  {
       for (int k = 0; k < buckets[j].size(); ++k) {
         key valor = buckets[j][k];
         this -> sequence_[position] = valor;
+        ++asignations;
         ++position;
       }
     }
