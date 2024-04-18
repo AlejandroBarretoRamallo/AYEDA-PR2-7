@@ -4,35 +4,35 @@
 #include <iostream>
 
 template<class key>
-class nodoBinario {
+class NodoBinario {
   public:
-    nodoBinario(key);
-    void addLeft(nodoBinario*);
-    void addRight(nodoBinario*);
-    friend std::ostream& operator<<(std::ostream& cout, const nodoBinario<key>& nodo) {
+    NodoBinario(key);
+    void addLeft(NodoBinario*);
+    void addRight(NodoBinario*);
+    friend std::ostream& operator<<(std::ostream& cout, const NodoBinario<key>& nodo) {
       cout << nodo.dato_;
       return cout;
     }
   protected:
     key dato_;
-    nodoBinario *left_;
-    nodoBinario *right_;
+    NodoBinario *left_;
+    NodoBinario *right_;
 };
 
 template<class key>
-nodoBinario<key>::nodoBinario(key dato) {
+NodoBinario<key>::NodoBinario(key dato) {
   dato_ = dato;
   left_ = nullptr;
   right_ = nullptr;
 }
 
 template<class key>
-void nodoBinario<key>::addLeft(nodoBinario* izq) {
+void NodoBinario<key>::addLeft(NodoBinario* izq) {
   left_ = izq;
 }
 
 template<class key>
-void nodoBinario<key>::addRight(nodoBinario* der) {
+void NodoBinario<key>::addRight(NodoBinario* der) {
   right_ = der;
 }
 
