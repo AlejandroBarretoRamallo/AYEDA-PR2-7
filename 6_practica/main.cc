@@ -43,5 +43,4 @@ int main(int argc, char* argv[]) {
   std::string arbolType = "", introduceData = "", file = "";
   int numElements = 0;
   readArgs(arbolType, introduceData, file, numElements, argc, argv);
-  
 }
