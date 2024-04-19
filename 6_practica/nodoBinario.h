@@ -26,10 +26,8 @@ class NodoBinario {
 };
 
 template<class key>
-NodoBinario<key>::NodoBinario(const key& dato) {
+NodoBinario<key>::NodoBinario(const key& dato): left_(nullptr), right_(nullptr) {
   dato_ = dato;
-  left_ = nullptr;
-  right_ = nullptr;
 }
 
 template<class key>

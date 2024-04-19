@@ -19,7 +19,8 @@ class ArbolBinario {
       cola.push(par);
       out << "Nivel 0:  ";
       while (!cola.empty()) {
-        std::pair<NodoBinario<key>, int> cola_par = cola.pop();
+        std::pair<NodoBinario<key>, int> cola_par = cola.front();
+        cola.pop();
         nivel = cola_par.second();
         nodo = cola_par.first();
         if(nivel > Nivel_actual) {
@@ -37,6 +38,7 @@ class ArbolBinario {
           out << "[.]";
         }
       }
+      return out;
     }
     ArbolBinario() {raiz_ = nullptr;};
   protected:
@@ -49,7 +51,7 @@ class ArbolBinarioBusqueda : public ArbolBinario<key> {
   public:
     bool insertar(const key&);  //hecho
     bool buscar(const key&); // hecho
-    ArbolBinarioBusqueda(): ArbolBinario() {};
+    ArbolBinarioBusqueda(): ArbolBinario<key>() {};
   private:
     bool añadir_rama(NodoBinario<key>*, key);  //hecho
     bool buscar_rama(NodoBinario<key>*, key);  //hecho
@@ -60,7 +62,7 @@ class ArbolBinarioEquilibrado : public ArbolBinario<key> {
   public:
     bool insertar(const key&);
     bool buscar(const key&);
-    ArbolBinarioEquilibrado(): ArbolBinario() {};
+    ArbolBinarioEquilibrado(): ArbolBinario<key>() {};
   private:
     bool insertar_rama(NodoBinario<key>*, key);
     bool buscar_rama(NodoBinario<key>*, key);
@@ -75,7 +77,7 @@ bool ArbolBinarioBusqueda<key>::insertar(const key& clave) {
 template<class key>
 bool ArbolBinarioBusqueda<key>::añadir_rama(NodoBinario<key>* nodo, key clave) {
   if (nodo == nullptr) {
-    nodo == new NodoBinario<key>(clave);
+    nodo = new NodoBinario<key>(clave);
     return true;
   }
   else if (nodo->getDato() < clave) {
@@ -140,7 +142,7 @@ bool ArbolBinarioEquilibrado<key>::buscar_rama(NodoBinario<key>* nodo, key clave
     return true;
   }
   else {
-    return buscar_rama(nodo->getLeft()) + buscar_rama(nodo->getRight());
+    return buscar_rama(nodo->getLeft(), clave) || buscar_rama(nodo->getRight(), clave);
   }
 }
 
