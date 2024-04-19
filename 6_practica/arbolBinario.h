@@ -49,6 +49,7 @@ class ArbolBinarioBusqueda : public ArbolBinario<key> {
   public:
     bool insertar(const key&);  //hecho
     bool buscar(const key&); // hecho
+    ArbolBinarioBusqueda(): ArbolBinario() {};
   private:
     bool añadir_rama(NodoBinario<key>*, key);  //hecho
     bool buscar_rama(NodoBinario<key>*, key);  //hecho
@@ -59,6 +60,7 @@ class ArbolBinarioEquilibrado : public ArbolBinario<key> {
   public:
     bool insertar(const key&);
     bool buscar(const key&);
+    ArbolBinarioEquilibrado(): ArbolBinario() {};
   private:
     bool insertar_rama(NodoBinario<key>*, key);
     bool buscar_rama(NodoBinario<key>*, key);
