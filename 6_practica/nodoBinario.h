@@ -9,9 +9,9 @@ class NodoBinario {
     NodoBinario(const key&);
     void addLeft(NodoBinario*);
     void addRight(NodoBinario*);
-    key getDato() const {return dato_;};
-    NodoBinario* getRight() const {return right_;};
-    NodoBinario* getLeft() const {return left_;};
+    key getDato() {return dato_;};
+    NodoBinario*& getRight() {return right_;};
+    NodoBinario*& getLeft() {return left_;};
     void setDato(const key dato) {dato_ = dato;};
     void setRight(const NodoBinario* right) {right_ = right;};
     void setLeft(const NodoBinario* left) {left_ = left;};
