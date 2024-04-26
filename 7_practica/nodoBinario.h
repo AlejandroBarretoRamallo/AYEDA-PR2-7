@@ -12,15 +12,13 @@ class NodoBinario {
     key getDato() {return dato_;};
     NodoBinario*& getRight() {return right_;};
     NodoBinario*& getLeft() {return left_;};
-    void setDato(const key dato) {dato_ = dato;};
-    void setRight(const NodoBinario* right) {right_ = right;};
-    void setLeft(const NodoBinario* left) {left_ = left;};
+    void setDato(key dato) {dato_ = dato;};
+    void setRight(NodoBinario* right) {right_ = right;};
+    void setLeft(NodoBinario* left) {left_ = left;};
     friend std::ostream& operator<<(std::ostream& cout, const NodoBinario<key>& nodo) {
       cout << nodo.dato_;
       return cout;
     }
-    virtual int getBalance() {return 0;};
-    virtual void setBalance(int balance) {};
   protected:
     key dato_;
     NodoBinario *left_;

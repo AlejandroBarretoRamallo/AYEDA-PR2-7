@@ -2,34 +2,39 @@
 #define ARBOLAVL_H
 
 #include "arbolBinario.h"
+#include "nodoBinario.h"
 
 
 template<class key>
 class ArbolBinarioAVL : public ArbolBinarioBusqueda<key> {
   public:
     bool insertar(const key&);
-    NodoBinario<key>* isBalanced();
-    ArbolBinarioAVL(bool trace): ArbolBinarioBusqueda<key>() {trace_ = trace;};
+    nodoAVL<key>* isBalanced();
+    ArbolBinarioAVL(bool trace): ArbolBinarioBusqueda<key>() {
+      trace_ = trace;
+      this->raiz_ = nodo_raiz_;
+    };
   private:
-    NodoBinario<key>* checkBalance(NodoBinario<key>*&);
-    bool insertar_rama(NodoBinario<key>*&, key);
-    void actualizar_balance(NodoBinario<key>*&);
+    nodoAVL<key>* checkBalance(nodoAVL<key>*&);
+    bool insertar_rama(nodoAVL<key>*&, key);
+    void actualizar_balance(nodoAVL<key>*&);
     bool trace_;
     int tam_rama(NodoBinario<key>*&);
-    void rotate(NodoBinario<key>*&);
-    void rotate_II(NodoBinario<key>*&);
-    void rotate_ID(NodoBinario<key>*&);
-    void rotate_DI(NodoBinario<key>*&);
-    void rotate_DD(NodoBinario<key>*&);
+    void rotate(nodoAVL<key>*&);
+    void rotate_II(nodoAVL<key>*&);
+    void rotate_ID(nodoAVL<key>*&);
+    void rotate_DI(nodoAVL<key>*&);
+    void rotate_DD(nodoAVL<key>*&);
+    nodoAVL<key>* nodo_raiz_;
 };
 
 template<class key>
-NodoBinario<key>* ArbolBinarioAVL<key>::isBalanced() {
-  return checkBalance(this->raiz_);
+nodoAVL<key>* ArbolBinarioAVL<key>::isBalanced() {
+  return checkBalance(nodo_raiz_);
 }
 
 template<class key>
-NodoBinario<key>* ArbolBinarioAVL<key>::checkBalance(NodoBinario<key>*& nodo) {
+nodoAVL<key>* ArbolBinarioAVL<key>::checkBalance(nodoAVL<key>*& nodo) {
   if (nodo == nullptr) {
     return nullptr;
   }
@@ -55,10 +60,10 @@ bool ArbolBinarioAVL<key>::insertar(const key& clave) {
     std::cout << "El elemento ya existe\n";
     return false;
   }
-  bool exito = insertar_rama(this->raiz_, clave);
+  bool exito = insertar_rama(nodo_raiz_, clave);
   if (exito) {
-    actualizar_balance(this->raiz_);
-    NodoBinario<key>* nodo = isBalanced();
+    actualizar_balance(nodo_raiz_);
+    nodoAVL<key>* nodo = isBalanced();
     if (nodo != nullptr) {
       rotate(nodo);
     }
@@ -67,7 +72,7 @@ bool ArbolBinarioAVL<key>::insertar(const key& clave) {
 }
 
 template<class key>
-bool ArbolBinarioAVL<key>::insertar_rama(NodoBinario<key>*& nodo, key clave) {
+bool ArbolBinarioAVL<key>::insertar_rama(nodoAVL<key>*& nodo, key clave) {
   if (nodo == nullptr) {
     nodo = new nodoAVL<key>(clave);
     return true;
@@ -82,12 +87,12 @@ bool ArbolBinarioAVL<key>::insertar_rama(NodoBinario<key>*& nodo, key clave) {
 }
 
 template<class key>
-void ArbolBinarioAVL<key>::rotate(NodoBinario<key>*& nodo) {
+void ArbolBinarioAVL<key>::rotate(nodoAVL<key>*& nodo) {
   if (trace_) {
     std::cout << this;
   }
   if (nodo->getBalance() < -1) {
-    NodoBinario<key>* sub_rama = nodo->getRight();
+    nodoAVL<key>* sub_rama = nodo->getRight();
     if (sub_rama->getBalance() < 0) {
       if (trace_) {
         std::cout << "rotate_DD\n";
@@ -122,7 +127,7 @@ void ArbolBinarioAVL<key>::rotate(NodoBinario<key>*& nodo) {
 }
 
 template<class key>
-void ArbolBinarioAVL<key>::actualizar_balance(NodoBinario<key>*& nodo) {
+void ArbolBinarioAVL<key>::actualizar_balance(nodoAVL<key>*& nodo) {
   if (nodo != nullptr) {
     nodo->setBalance(tam_rama(nodo->getRight()) - tam_rama(nodo->getLeft()));
     actualizar_balance(nodo->getLeft());
@@ -141,9 +146,9 @@ int ArbolBinarioAVL<key>::tam_rama(NodoBinario<key>*& nodo) {
 }
 
 template<class key>
-void ArbolBinarioAVL<key>::rotate_II(NodoBinario<key>*& nodo) {
-  NodoBinario<key>* nodo1 = nodo->izdo;
-  nodo->setLeft(nodo1->dcho);
+void ArbolBinarioAVL<key>::rotate_II(nodoAVL<key>*& nodo) {
+  NodoBinario<key>* nodo1 = nodo->getLeft();
+  nodo->setLeft(nodo1->getLeft());
   nodo1->setRight(nodo);
   if (nodo1->getBalance() == 1) {
      nodo->setBalance(0);
@@ -157,7 +162,7 @@ void ArbolBinarioAVL<key>::rotate_II(NodoBinario<key>*& nodo) {
 }
 
 template<class key>
-void ArbolBinarioAVL<key>::rotate_ID (NodoBinario<key>* &nodo) {
+void ArbolBinarioAVL<key>::rotate_ID (nodoAVL<key>* &nodo) {
   NodoBinario<key>* nodo1 = nodo->getLeft();
   NodoBinario<key>* nodo2 = nodo1->getRight();
   nodo->setLeft(nodo2->getRight());
@@ -181,13 +186,13 @@ void ArbolBinarioAVL<key>::rotate_ID (NodoBinario<key>* &nodo) {
 }
 
 template<class key>
-void ArbolBinarioAVL<key>::rotate_DI(NodoBinario<key>* &nodo) {
+void ArbolBinarioAVL<key>::rotate_DI(nodoAVL<key>* &nodo) {
   NodoBinario<key>* nodo1 = nodo->getRight();
   NodoBinario<key>* nodo2 = nodo1->getLeft();
-  nodo->setRight(nodo2->izdo);
+  nodo->setRight(nodo2->getLeft());
   nodo2->setLeft(nodo);
-  nodo1->setLeft(nodo2->getRigth());
-  nodo2->setRigth(nodo1);
+  nodo1->setLeft(nodo2->getRight());
+  nodo2->setRight(nodo1);
   if (nodo2->getBalance() == 1) {
     nodo1->setBalance(-1);
   } 
@@ -205,7 +210,7 @@ void ArbolBinarioAVL<key>::rotate_DI(NodoBinario<key>* &nodo) {
 }
 
 template<class key>
-void ArbolBinarioAVL<key>::rotate_DD (NodoBinario<key>* &nodo) {
+void ArbolBinarioAVL<key>::rotate_DD (nodoAVL<key>* &nodo) {
   NodoBinario<key>* nodo1 = nodo->getRight();
   nodo->setRight(nodo1->getLeft());
   nodo1->setLeft(nodo);
