@@ -19,11 +19,12 @@ class NodoBinario {
       cout << nodo.dato_;
       return cout;
     }
+    virtual int getBalance() {return 0;};
+    virtual void setBalance(int) {};
   protected:
     key dato_;
     NodoBinario *left_;
     NodoBinario *right_;
-    
 };
 
 template<class key>
@@ -32,8 +33,8 @@ class nodoAVL : public NodoBinario<key> {
     nodoAVL(const key& dato): NodoBinario<key>(dato) {
       balance_ = 0;
     }
-    int getBalance() {return balance_;};
-    void setBalance(int balance) {balance_ = balance;};
+    int getBalance() override {return balance_;};
+    void setBalance(int balance) override {balance_ = balance;};
   private:
     int balance_;
 };

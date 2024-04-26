@@ -7,7 +7,7 @@
 #include "Dni.h"
 
 void help() {
-  std::cout << "-ab <abe|abb>, para indicar el tipo de árbol con el que se va a trabajar.\n";
+  std::cout << "-ab <abe|abb|avl>, para indicar el tipo de árbol con el que se va a trabajar.\n";
   std::cout << "-init <i> [s][f], indica la forma de introducir los datos de la secuencia\n";
   std::cout << "i=manual\n";
   std::cout << "i=random [s], s es el número de elementos a generar\n";
